@@ -20,3 +20,16 @@ export function normalizeHash(hash, tabs, defaultTab) {
   const name = (hash || "").replace(/^#\/?/, "").toLowerCase();
   return tabs.includes(name) ? name : defaultTab;
 }
+
+const HTML_ESCAPES = {
+  "&": "&amp;",
+  "<": "&lt;",
+  ">": "&gt;",
+  '"': "&quot;",
+  "'": "&#39;",
+};
+
+/** Escape a string for safe insertion via innerHTML. */
+export function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, (c) => HTML_ESCAPES[c]);
+}
