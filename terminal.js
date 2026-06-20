@@ -144,3 +144,49 @@ export function echoPrompt(doc, promptStr, input) {
 export function clearOutput(doc) {
   doc.getElementById("output").innerHTML = "";
 }
+
+/** Execute a builtin command (help / clear / neofetch / fastfetch). */
+export function runBuiltin(ctx, name) {
+  const { doc } = ctx;
+  switch (name) {
+    case "help":
+      appendOutput(doc, ctx.helpText.map((l) => escapeHtml(l)).join("<br>"));
+      break;
+    case "clear":
+      clearOutput(doc);
+      break;
+    case "neofetch":
+    case "fastfetch":
+      appendOutput(doc, renderNeofetch(ctx.profile, ctx.systemInfo));
+      break;
+  }
+}
+
+/** Resolve, echo, and execute a typed line; record it in history. */
+export function executeCommand(ctx, rawInput) {
+  const result = resolveCommand(rawInput, {
+    tabs: ctx.tabs,
+    builtins: ctx.builtins,
+  });
+  if (result.type === "empty") return;
+
+  echoPrompt(ctx.doc, ctx.promptStr, rawInput.trim());
+
+  switch (result.type) {
+    case "tab":
+      switchTab(ctx.doc, result.name);
+      ctx.setHash(result.name);
+      break;
+    case "builtin":
+      runBuiltin(ctx, result.name);
+      break;
+    case "unknown":
+      appendOutput(
+        ctx.doc,
+        `<span class="err">command not found: ${escapeHtml(result.input)}</span>`,
+      );
+      break;
+  }
+
+  ctx.history.add(rawInput);
+}
