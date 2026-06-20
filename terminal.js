@@ -89,3 +89,24 @@ export function renderNeofetch(profile, info) {
     `</div>`
   );
 }
+
+/**
+ * Type `text` into `el` one character at a time.
+ * @param schedule injectable timer (defaults to setTimeout) for testability.
+ * @returns Promise that resolves when typing finishes.
+ */
+export function typeText(el, text, speed = 55, schedule = setTimeout) {
+  return new Promise((resolve) => {
+    let i = 0;
+    function tick() {
+      el.textContent = text.slice(0, i);
+      if (i < text.length) {
+        i++;
+        schedule(tick, speed);
+      } else {
+        resolve();
+      }
+    }
+    tick();
+  });
+}
