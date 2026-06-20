@@ -12,3 +12,11 @@ export function resolveCommand(input, { tabs, builtins }) {
   if (builtins.includes(cmd)) return { type: "builtin", name: cmd };
   return { type: "unknown", input: trimmed };
 }
+
+/**
+ * Map a window.location.hash to a valid tab name, falling back to defaultTab.
+ */
+export function normalizeHash(hash, tabs, defaultTab) {
+  const name = (hash || "").replace(/^#\/?/, "").toLowerCase();
+  return tabs.includes(name) ? name : defaultTab;
+}
