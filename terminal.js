@@ -33,3 +33,33 @@ const HTML_ESCAPES = {
 export function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, (c) => HTML_ESCAPES[c]);
 }
+
+/** Shell-style command history with a cursor for ↑/↓ navigation. */
+export class CommandHistory {
+  constructor(entries = []) {
+    this.entries = [...entries];
+    this.cursor = this.entries.length; // points just past the newest
+  }
+
+  add(cmd) {
+    const trimmed = cmd.trim();
+    if (trimmed === "") return;
+    if (this.entries[this.entries.length - 1] !== trimmed) {
+      this.entries.push(trimmed);
+    }
+    this.cursor = this.entries.length;
+  }
+
+  /** Move toward older entries. Returns the entry, or null if history is empty. */
+  prev() {
+    if (this.entries.length === 0) return null;
+    if (this.cursor > 0) this.cursor--;
+    return this.entries[this.cursor];
+  }
+
+  /** Move toward newer entries. Returns "" when past the newest. */
+  next() {
+    if (this.cursor < this.entries.length) this.cursor++;
+    return this.cursor >= this.entries.length ? "" : this.entries[this.cursor];
+  }
+}
