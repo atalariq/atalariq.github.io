@@ -1,4 +1,5 @@
 // terminal.js — pure logic + thin DOM wrappers. No top-level side effects.
+import { profile, tabs, builtins, helpText, systemInfo } from "./data.js";
 
 /**
  * Resolve a typed line into an action.
@@ -189,4 +190,101 @@ export function executeCommand(ctx, rawInput) {
   }
 
   ctx.history.add(rawInput);
+}
+
+/** Focus the prompt input (used on click-anywhere and after commands). */
+export function focusInput(doc) {
+  const input = doc.getElementById("prompt-input");
+  if (input) input.focus();
+}
+
+/** Play the boot typewriter: type "whoami" into #boot-command. */
+async function playBoot(doc, schedule) {
+  const el = doc.getElementById("boot-command");
+  if (!el) return;
+  await typeText(el, "whoami", 70, schedule);
+}
+
+/**
+ * Wire the terminal: events, initial hash routing, optional boot typewriter.
+ * @param opts.win injected window (defaults to global window)
+ * @param opts.doc injected document (defaults to global document)
+ * @param opts.typewriter set false in tests to skip the async boot animation
+ */
+export function bootstrap(opts = {}) {
+  const win = opts.win || globalThis.window;
+  const doc = opts.doc || globalThis.document;
+  const promptStr = `${profile.user}@${profile.host}:~$`;
+
+  const ctx = {
+    doc,
+    tabs,
+    builtins,
+    profile,
+    helpText,
+    systemInfo,
+    history: new CommandHistory(),
+    promptStr,
+    setHash: (name) => {
+      win.history.replaceState(null, "", `#${name}`);
+    },
+  };
+
+  const input = doc.getElementById("prompt-input");
+  const form = doc.getElementById("prompt-form");
+
+  // Submit a typed command.
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    executeCommand(ctx, input.value);
+    input.value = "";
+    const screen = doc.getElementById("screen");
+    if (screen) screen.scrollTop = screen.scrollHeight;
+  });
+
+  // ↑/↓ history navigation.
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowUp") {
+      const prev = ctx.history.prev();
+      if (prev !== null) {
+        input.value = prev;
+        e.preventDefault();
+      }
+    } else if (e.key === "ArrowDown") {
+      input.value = ctx.history.next();
+      e.preventDefault();
+    }
+  });
+
+  // Tab-bar clicks.
+  doc.querySelectorAll("[data-tab]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      switchTab(doc, btn.dataset.tab);
+      ctx.setHash(btn.dataset.tab);
+      focusInput(doc);
+    });
+  });
+
+  // Click anywhere in the terminal focuses the prompt (unless selecting a link).
+  const terminal = doc.getElementById("terminal");
+  if (terminal) {
+    terminal.addEventListener("click", (e) => {
+      if (e.target.tagName !== "A") focusInput(doc);
+    });
+  }
+
+  // Respond to back/forward hash changes.
+  win.addEventListener("hashchange", () => {
+    switchTab(doc, normalizeHash(win.location.hash, tabs, "about"));
+  });
+
+  // Initial routing.
+  const initial = normalizeHash(win.location.hash, tabs, "about");
+  switchTab(doc, initial);
+  focusInput(doc);
+
+  // Boot typewriter only on the about tab, only on real loads.
+  if (opts.typewriter !== false && initial === "about") {
+    playBoot(doc, opts.schedule);
+  }
 }
