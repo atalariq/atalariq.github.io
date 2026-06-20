@@ -95,19 +95,15 @@ html {
 
 /* ============================ Everforest Dark ============================ */
 
+/* Portfolio-specific tokens — Everforest palette for terminal chrome */
 :root {
-  --bg: #2d3b2a;
-  --surface: #3c4a38;
-  --text: #d3c6aa;
-  --green: #a7c080;
-  --blue: #7fbbb3;
-  --yellow: #dbbc7f;
+  --green: #a7c080; /* active tabs, cursor, prompt label */
+  --blue: #7fbbb3; /* links */
+  --yellow: #dbbc7f; /* command prompt text */
   --red: #ea8588; /* lightened from #e67e80 to meet WCAG AA (4.64:1) for error text */
   --gray: #b3c0a8; /* lightened from #859289 to meet WCAG AA on bg + surface (4.95:1) */
-
   --font:
     "Fira Code", ui-monospace, "Cascadia Code", "JetBrains Mono", monospace;
-  --radius: 8px;
 }
 
 html,

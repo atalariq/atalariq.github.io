@@ -1,0 +1,114 @@
+/* ════════════════════════════════════════════════════════════════════
+   Design System — base tokens
+   Theme: Proposal D "Forest" (see proposals/proposal-D.md)
+
+   Authoring model: OKLCH is canonical (perceptual lightness lets us
+   re-light the accent per mode by arithmetic). Hex kept as a comment
+   for eyeballing. See research/color-theory.md §1.
+
+   Every fg/bg pair is WCAG AA+; verify with: python3 tools/color.py
+   ════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── Color: light (Flexoki warm paper) ─────────────────────────── */
+  --bg: oklch(99% 0.016 95.2); /* #fffcf0  */
+  --surface: oklch(95.4% 0.015 98.3); /* #f2f0e5  */
+  --overlay: oklch(91.7% 0.015 98.3); /* #e6e4d9  */
+  --muted: oklch(53.8% 0.008 97.4); /* #6f6e69  — 4.97:1 AA  */
+  --text: oklch(17% 0.002 17.3); /* #100f0f  — 18.62:1 AAA */
+  --accent: oklch(48.3% 0.1 150.1); /* #2d6e3f  — 5.99:1 AA  */
+  --success: oklch(53.9% 0.13 123.9); /* #5f7a0a  — 4.78:1 AA  */
+  --warning: oklch(55.4% 0.121 68.5); /* #a06300  — 4.78:1 AA  */
+  --error: oklch(54.6% 0.161 27); /* #bc4039  — 5.20:1 AA  */
+  --info: oklch(51.4% 0.13 249.9); /* #1c6aae  — 5.49:1 AA  */
+
+  /* ── Typography ─────────────────────────────────────────────────── */
+  --font-sans:
+    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  /* Minor-third scale (×1.25), fluid via clamp() */
+  --step--1: clamp(0.83rem, 0.8rem + 0.15vw, 0.9rem);
+  --step-0: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  --step-1: clamp(1.25rem, 1.15rem + 0.5vw, 1.5rem);
+  --step-2: clamp(1.56rem, 1.4rem + 0.8vw, 2rem);
+  --step-3: clamp(1.95rem, 1.7rem + 1.25vw, 2.75rem);
+
+  --measure: 65ch;
+
+  /* ── Spacing ─────────────────────────────────────────────────────── */
+  --space-2xs: 0.25rem; /*  4px */
+  --space-xs: 0.5rem; /*  8px */
+  --space-s: 0.75rem; /* 12px */
+  --space-m: 1rem; /* 16px */
+  --space-l: 1.5rem; /* 24px */
+  --space-xl: 2.5rem; /* 40px */
+  --space-2xl: 4rem; /* 64px */
+
+  /* ── Radius ──────────────────────────────────────────────────────── */
+  --radius: 0.25rem;
+
+  /* ── Shadow & Ring ───────────────────────────────────────────────── */
+  --shadow:
+    0 1px 2px color-mix(in oklch, var(--text) 8%, transparent),
+    0 4px 12px color-mix(in oklch, var(--text) 6%, transparent);
+  --ring: 0 0 0 3px color-mix(in oklch, var(--accent) 35%, transparent);
+
+  /* ── Motion ──────────────────────────────────────────────────────── */
+  --duration-fast: 0.15s; /* hover, micro-interactions */
+  --duration-base: 0.25s; /* theme switch, larger transitions */
+  --easing: ease;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    /* ── Color: dark (Gruvbox warm dark) ───────────────────────── */
+    --bg: oklch(27.7% 0 89.9); /* #282828  */
+    --surface: oklch(31.1% 0.003 48.6); /* #32302f  */
+    --overlay: oklch(34.4% 0.007 48.5); /* #3c3836  */
+    --muted: oklch(69% 0.035 76.3); /* #a89984  — 5.30:1 AA  */
+    --text: oklch(89.4% 0.057 89.2); /* #ebdbb2  — 10.75:1 AAA */
+    --accent: oklch(73.4% 0.1 149.7); /* #7abb87  — 6.52:1 AA  */
+    --success: oklch(75.7% 0.13 124); /* #9fbe5c  — 7.02:1 AAA */
+    --warning: oklch(80.9% 0.12 75); /* #eeb562  — 8.02:1 AAA */
+    --error: oklch(76.2% 0.14 21.9); /* #fe8b89  — 6.51:1 AA  */
+    --info: oklch(76.3% 0.101 250.1); /* #80b7f0  — 6.99:1 AA  */
+  }
+}
+
+/* Explicit dark: lower specificity than the @media block above, so both blocks
+   must stay identical — otherwise this override is silently ignored on dark-OS. */
+[data-theme="dark"] {
+  --bg: oklch(27.7% 0 89.9);
+  --surface: oklch(31.1% 0.003 48.6);
+  --overlay: oklch(34.4% 0.007 48.5);
+  --muted: oklch(69% 0.035 76.3);
+  --text: oklch(89.4% 0.057 89.2);
+  --accent: oklch(73.4% 0.1 149.7);
+  --success: oklch(75.7% 0.13 124);
+  --warning: oklch(80.9% 0.12 75);
+  --error: oklch(76.2% 0.14 21.9);
+  --info: oklch(76.3% 0.101 250.1);
+}
+
+/* Explicit light: lets OS-dark users pin the light palette. */
+[data-theme="light"] {
+  --bg: oklch(99% 0.016 95.2);
+  --surface: oklch(95.4% 0.015 98.3);
+  --overlay: oklch(91.7% 0.015 98.3);
+  --muted: oklch(53.8% 0.008 97.4);
+  --text: oklch(17% 0.002 17.3);
+  --accent: oklch(48.3% 0.1 150.1);
+  --success: oklch(53.9% 0.13 123.9);
+  --warning: oklch(55.4% 0.121 68.5);
+  --error: oklch(54.6% 0.161 27);
+  --info: oklch(51.4% 0.13 249.9);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0s;
+    --duration-base: 0s;
+  }
+}
