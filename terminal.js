@@ -110,3 +110,37 @@ export function typeText(el, text, speed = 55, schedule = setTimeout) {
     tick();
   });
 }
+
+/** Show the named pane + mark its tab selected; hide/deselect the rest. */
+export function switchTab(doc, name) {
+  doc.querySelectorAll("[data-tab]").forEach((btn) => {
+    btn.setAttribute(
+      "aria-selected",
+      btn.dataset.tab === name ? "true" : "false",
+    );
+  });
+  doc.querySelectorAll("[data-pane]").forEach((pane) => {
+    pane.hidden = pane.dataset.pane !== name;
+  });
+}
+
+/** Append a chunk of HTML as a new line in the command-output log. */
+export function appendOutput(doc, html) {
+  const out = doc.getElementById("output");
+  const line = doc.createElement("div");
+  line.innerHTML = html;
+  out.appendChild(line);
+}
+
+/** Echo a typed command, prompt-prefixed, into the output log (input escaped). */
+export function echoPrompt(doc, promptStr, input) {
+  appendOutput(
+    doc,
+    `<span class="dim">${escapeHtml(promptStr)}</span> <span class="yellow">${escapeHtml(input)}</span>`,
+  );
+}
+
+/** Empty the command-output log. */
+export function clearOutput(doc) {
+  doc.getElementById("output").innerHTML = "";
+}
