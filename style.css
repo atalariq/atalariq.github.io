@@ -102,8 +102,8 @@ html {
   --green: #a7c080;
   --blue: #7fbbb3;
   --yellow: #dbbc7f;
-  --red: #e67e80;
-  --gray: #859289;
+  --red: #ea8588; /* lightened from #e67e80 to meet WCAG AA (4.64:1) for error text */
+  --gray: #b3c0a8; /* lightened from #859289 to meet WCAG AA on bg + surface (4.95:1) */
 
   --font:
     "Fira Code", ui-monospace, "Cascadia Code", "JetBrains Mono", monospace;
