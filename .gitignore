@@ -23,3 +23,6 @@ docs/superpowers/
 # JS dev tooling (test runner only — not shipped)
 node_modules/
 bun.lockb
+
+# original brainstorm note (not part of the site)
+TODO.md
