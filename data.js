@@ -43,6 +43,7 @@ export const helpText = [
   "  help        — this message",
   "  clear       — clear the screen",
   "  neofetch    — system info (try it)",
+  "  fastfetch   — alias for neofetch",
   "",
   "tip: use the tab bar above, or type a command. ↑/↓ for history.",
 ];

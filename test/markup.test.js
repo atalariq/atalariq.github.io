@@ -52,3 +52,14 @@ test("linktree pane contains the real outbound links", () => {
   expect(html).toContain("github.com/atalariq");
   expect(html).toContain("linkedin.com/in/atalariq");
 });
+
+test("each pane's aria-labelledby resolves to an existing tab button id", () => {
+  const doc = dom();
+  for (const t of ["about", "linktree", "projects", "vision", "contact"]) {
+    const pane = doc.querySelector(`[data-pane="${t}"]`);
+    const labelledBy = pane.getAttribute("aria-labelledby");
+    expect(labelledBy).toBeTruthy();
+    // the referenced id must exist in the document (no dangling ARIA reference)
+    expect(doc.getElementById(labelledBy)).not.toBeNull();
+  }
+});
