@@ -1,0 +1,13 @@
+{
+  "name": "atalariq-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Terminal-UI personal portfolio (atalariq.dev)",
+  "scripts": {
+    "test": "bun test"
+  },
+  "devDependencies": {
+    "@happy-dom/global-registrator": "^15.0.0"
+  }
+}
