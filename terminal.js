@@ -63,3 +63,29 @@ export class CommandHistory {
     return this.cursor >= this.entries.length ? "" : this.entries[this.cursor];
   }
 }
+
+/** Build the neofetch/fastfetch easter-egg output as an HTML string. */
+export function renderNeofetch(profile, info) {
+  const title = `${profile.user}@${profile.host}`;
+  const rows = Object.entries(info)
+    .map(
+      ([key, value]) =>
+        `<span class="nf-key">${escapeHtml(key)}</span>: ${escapeHtml(value)}`,
+    )
+    .join("\n");
+  const logo = [
+    "   ▟████▙   ",
+    "  ▟██████▙  ",
+    " ▟███▛▜███▙ ",
+    " ▜███▙▟███▛ ",
+    "  ▜██████▛  ",
+    "   ▜████▛   ",
+  ].join("\n");
+  return (
+    `<div class="neofetch">` +
+    `<pre class="nf-logo">${logo}</pre>` +
+    `<pre class="nf-info"><span class="nf-title">${escapeHtml(title)}</span>\n` +
+    `${"-".repeat(title.length)}\n${rows}</pre>` +
+    `</div>`
+  );
+}
