@@ -1,55 +1,262 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="author" content="Atalariq">
-    <meta name="description" content="Atalariq's GitHub Page">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="color-scheme" content="light dark">
-    <link rel="stylesheet" href="style.css">
-    <title>Home | Atalariq</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Atalariq Barra Hadinugraha" />
+    <meta
+      name="description"
+      content="Atalariq Barra Hadinugraha — CS student from Indonesia, platform-engineer-in-training. A terminal-UI portfolio."
+    />
+    <meta name="color-scheme" content="dark" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="atalariq — terminal portfolio" />
+    <meta
+      property="og:description"
+      content="CS student from Indonesia. Platform engineering, DevOps, agentic workflows."
+    />
+    <meta property="og:url" content="https://atalariq.dev" />
+    <meta property="og:image" content="https://atalariq.dev/assets/og.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <title>atalariq@portfolio</title>
   </head>
   <body>
-    <header>
-      <hgroup>
-        <h1>The Center of Atalariq's Chaotic Works</h1>
-        <p>This is an introduction and link-tree page</p>
-      </hgroup>
-      <ul id="social">
-        <li><a href="https://github.com/atalariq">GitHub</a></li>
-        <li><a href="https://instagram.com/atalariq.dev">Instagram</a></li>
-        <li><a href="https://linkedin.com/in/atalariq">LinkedIn</a></li>
-      </ul>
-    </header>
-    <hr>
-    <main>
-      <article id="about">
-        <hgroup>
-          <h2>About Me</h2>
-          <p>My name is Atalariq Barra Hadinugraha. I'm a CS student from Indonesia.</p>
-        </hgroup>
-      </article>
-      <article id="work">
-        <hgroup>
-          <h2>My Work</h2>
-          <p>These are my works:</p>
-        </hgroup>
-        <hgroup>
-          <h3>Writing</h3>
-          <p>
-            I like to write about programming, linux, education, and self-dev topics. Almost all my stuff are written in Indonesian, you can see them on:
-            <ul>
-              <li><a href="https://journal.atalariq.dev">My Digital Garden</a></li>
-              <li><a href="https://medium.com/@atalariq">Medium</a></li>
-              <li><a href="https://threads.com/@atalariq__">Threads</a></li>
-            </ul>
+    <main id="terminal" class="terminal" aria-label="terminal portfolio">
+      <!-- Title bar -->
+      <header class="titlebar">
+        <span class="prompt-label">atalariq@portfolio:~$</span>
+        <span class="titlebar-dots" aria-hidden="true">● ● ●</span>
+      </header>
+
+      <!-- Tab bar -->
+      <nav class="tabbar" role="tablist" aria-label="sections">
+        <button
+          class="tab"
+          role="tab"
+          data-tab="about"
+          aria-selected="true"
+          aria-controls="pane-about"
+        >
+          about
+        </button>
+        <button
+          class="tab"
+          role="tab"
+          data-tab="linktree"
+          aria-selected="false"
+          aria-controls="pane-linktree"
+        >
+          linktree
+        </button>
+        <button
+          class="tab"
+          role="tab"
+          data-tab="projects"
+          aria-selected="false"
+          aria-controls="pane-projects"
+        >
+          projects
+        </button>
+        <button
+          class="tab"
+          role="tab"
+          data-tab="vision"
+          aria-selected="false"
+          aria-controls="pane-vision"
+        >
+          vision
+        </button>
+        <button
+          class="tab"
+          role="tab"
+          data-tab="contact"
+          aria-selected="false"
+          aria-controls="pane-contact"
+        >
+          contact
+        </button>
+      </nav>
+
+      <!-- Screen: scrollable content area -->
+      <div class="screen" id="screen">
+        <!-- about: whoami -->
+        <section
+          class="pane"
+          id="pane-about"
+          data-pane="about"
+          role="tabpanel"
+          aria-labelledby="tab-about"
+        >
+          <p class="cmdline">
+            <span class="dim">atalariq@portfolio:~$</span>
+            <span id="boot-command"></span
+            ><span class="cursor-inline" aria-hidden="true"></span>
           </p>
-        </hgroup>
-      </article>
+          <div class="cmd-output">
+            <p>
+              <span class="green">Atalariq Barra Hadinugraha</span> — CS student
+              from Indonesia.
+            </p>
+            <p class="dim"># status</p>
+            <p>exploring agentic workflows, harness &amp; loop engineering.</p>
+            <p>
+              re-learning vim, git, docker, and advanced CLI from the ground up.
+            </p>
+            <p class="dim"># stack</p>
+            <p>Go · JS/TS (Bun) · Linux · Docker</p>
+          </div>
+        </section>
+
+        <!-- linktree: ls ~/links -->
+        <section
+          class="pane"
+          id="pane-linktree"
+          data-pane="linktree"
+          role="tabpanel"
+          aria-labelledby="tab-linktree"
+          hidden
+        >
+          <p class="cmdline">
+            <span class="dim">atalariq@portfolio:~$</span> ls ~/links
+          </p>
+          <ul class="cmd-output linklist">
+            <li>
+              <a href="https://github.com/atalariq">github.com/atalariq</a>
+            </li>
+            <li>
+              <a href="https://linkedin.com/in/atalariq"
+                >linkedin.com/in/atalariq</a
+              >
+            </li>
+            <li>
+              <a href="https://instagram.com/atalariq.dev"
+                >instagram.com/atalariq.dev</a
+              >
+            </li>
+            <li>
+              <a href="https://journal.atalariq.dev">journal.atalariq.dev</a>
+            </li>
+            <li>
+              <a href="https://medium.com/@atalariq">medium.com/@atalariq</a>
+            </li>
+          </ul>
+        </section>
+
+        <!-- projects: ls ~/projects -->
+        <section
+          class="pane"
+          id="pane-projects"
+          data-pane="projects"
+          role="tabpanel"
+          aria-labelledby="tab-projects"
+          hidden
+        >
+          <p class="cmdline">
+            <span class="dim">atalariq@portfolio:~$</span> ls ~/projects
+          </p>
+          <div class="cmd-output">
+            <article class="project">
+              <h2 class="green">atalariq.github.io</h2>
+              <p>
+                This site — a full terminal-UI portfolio, pure static, no
+                framework.
+              </p>
+              <p class="tags">[html] [css] [vanilla-js] [github-pages]</p>
+            </article>
+            <article class="project">
+              <h2 class="green">dotfiles</h2>
+              <p>
+                Riced terminal-heavy workflow: editor, shell, multiplexer, the
+                works.
+              </p>
+              <p class="tags">[bash] [neovim] [tmux] [linux]</p>
+            </article>
+          </div>
+        </section>
+
+        <!-- vision: cat ~/vision.md -->
+        <section
+          class="pane"
+          id="pane-vision"
+          data-pane="vision"
+          role="tabpanel"
+          aria-labelledby="tab-vision"
+          hidden
+        >
+          <p class="cmdline">
+            <span class="dim">atalariq@portfolio:~$</span> cat ~/vision.md
+          </p>
+          <div class="cmd-output">
+            <h2 class="green"># vision</h2>
+            <p>
+              Become a Platform Engineer — Go + JS/TS (Bun), DevOps, Cloud, SRE.
+            </p>
+            <h2 class="green"># teaching</h2>
+            <p>
+              Build an MIT "Missing Semester"-style curriculum for Indonesian
+              students: the practical tooling no one teaches in class.
+            </p>
+          </div>
+        </section>
+
+        <!-- contact: cat ~/contact.md -->
+        <section
+          class="pane"
+          id="pane-contact"
+          data-pane="contact"
+          role="tabpanel"
+          aria-labelledby="tab-contact"
+          hidden
+        >
+          <p class="cmdline">
+            <span class="dim">atalariq@portfolio:~$</span> cat ~/contact.md
+          </p>
+          <div class="cmd-output">
+            <p># get in touch</p>
+            <p>
+              <a href="mailto:rfachrizal98@gmail.com">rfachrizal98@gmail.com</a>
+            </p>
+            <p class="dim">
+              or find me on any of the links in <a href="#linktree">~/links</a>.
+            </p>
+          </div>
+        </section>
+
+        <!-- typed-command output log -->
+        <div id="output" class="cmd-output" aria-live="polite"></div>
+      </div>
+
+      <!-- Prompt -->
+      <form id="prompt-form" class="promptbar" autocomplete="off">
+        <label for="prompt-input" class="prompt-label"
+          >atalariq@portfolio:~$</label
+        >
+        <input
+          id="prompt-input"
+          class="prompt-input"
+          type="text"
+          name="cmd"
+          aria-label="terminal command input"
+          autocomplete="off"
+          autocapitalize="off"
+          autocorrect="off"
+          spellcheck="false"
+        />
+      </form>
     </main>
-    <hr>
-    <footer>
-      Atalariq &copy; 2025
-    </footer>
+
+    <script type="module">
+      import { bootstrap } from "./terminal.js";
+      bootstrap();
+    </script>
   </body>
 </html>
