@@ -2,16 +2,19 @@ import { test, expect, beforeEach } from "bun:test";
 import { bootstrap } from "../terminal.js";
 
 const FIXTURE = `
-  <nav>
-    <button data-tab="about" aria-selected="true"></button>
-    <button data-tab="projects" aria-selected="false"></button>
-  </nav>
-  <div class="screen" id="screen">
-    <section data-pane="about"><span id="boot-command"></span></section>
-    <section data-pane="projects" hidden></section>
-    <div id="output"></div>
-  </div>
-  <form id="prompt-form"><input id="prompt-input" /></form>
+  <main id="terminal">
+    <span class="prompt-label">atalariq@portfolio:~$</span>
+    <nav>
+      <button data-tab="about" aria-selected="true"></button>
+      <button data-tab="projects" aria-selected="false"></button>
+      <button data-tab="vision" aria-selected="false"></button>
+    </nav>
+    <div class="screen" id="screen">
+      <section id="pane-about"><span id="boot-command"></span></section>
+      <div id="output"></div>
+    </div>
+    <form id="prompt-form"><label class="prompt-label">x</label><input id="prompt-input" /></form>
+  </main>
 `;
 
 function fakeWindow(hash = "") {
@@ -34,7 +37,7 @@ beforeEach(() => {
   document.body.innerHTML = FIXTURE;
 });
 
-test("typing a command in the input and submitting executes it", () => {
+test("submitting a command executes it and clears the input", () => {
   const win = fakeWindow("");
   bootstrap({ win, doc: document, typewriter: false });
   const input = document.getElementById("prompt-input");
@@ -42,25 +45,32 @@ test("typing a command in the input and submitting executes it", () => {
   document
     .getElementById("prompt-form")
     .dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
-  expect(document.querySelector('[data-pane="projects"]').hidden).toBe(false);
-  expect(input.value).toBe(""); // input cleared after submit
+  expect(
+    document
+      .querySelector('[data-tab="projects"]')
+      .getAttribute("aria-selected"),
+  ).toBe("true");
+  expect(input.value).toBe("");
 });
 
-test("initial hash routes to the matching tab on load", () => {
+test("initial hash highlights the matching tab and prints its section", () => {
   const win = fakeWindow("#projects");
   bootstrap({ win, doc: document, typewriter: false });
-  expect(document.querySelector('[data-pane="projects"]').hidden).toBe(false);
+  expect(
+    document
+      .querySelector('[data-tab="projects"]')
+      .getAttribute("aria-selected"),
+  ).toBe("true");
+  expect(document.getElementById("output").textContent).toContain("dotfiles");
 });
 
-test("ArrowUp recalls the previous command into the input", () => {
+test("ArrowUp recalls the previous command", () => {
   const win = fakeWindow("");
   bootstrap({ win, doc: document, typewriter: false });
   const input = document.getElementById("prompt-input");
   const form = document.getElementById("prompt-form");
-
   input.value = "about";
   form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
-
   input.dispatchEvent(
     new KeyboardEvent("keydown", { key: "ArrowUp", bubbles: true }),
   );
@@ -72,7 +82,6 @@ test("ArrowDown past the newest clears the input", () => {
   bootstrap({ win, doc: document, typewriter: false });
   const input = document.getElementById("prompt-input");
   const form = document.getElementById("prompt-form");
-
   input.value = "about";
   form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
   input.dispatchEvent(
@@ -87,48 +96,35 @@ test("ArrowDown past the newest clears the input", () => {
 test("hashchange routes to the new tab", () => {
   const win = fakeWindow("");
   bootstrap({ win, doc: document, typewriter: false });
-  win.location.hash = "#projects";
+  win.location.hash = "#vision";
   win._listeners.hashchange();
-  expect(document.querySelector('[data-pane="projects"]').hidden).toBe(false);
+  expect(
+    document.querySelector('[data-tab="vision"]').getAttribute("aria-selected"),
+  ).toBe("true");
 });
 
-test("clicking a tab button switches tab and sets the hash", () => {
+test("clicking a tab button highlights it and sets the hash", () => {
   const win = fakeWindow("");
   bootstrap({ win, doc: document, typewriter: false });
-  const btn = document.querySelector('[data-tab="projects"]');
-  btn.click();
-  expect(document.querySelector('[data-pane="projects"]').hidden).toBe(false);
+  document.querySelector('[data-tab="projects"]').click();
+  expect(
+    document
+      .querySelector('[data-tab="projects"]')
+      .getAttribute("aria-selected"),
+  ).toBe("true");
   expect(win._listeners._url).toBe("#projects");
 });
 
-test("click anywhere in #terminal focuses the prompt input", () => {
-  const TERMINAL_FIXTURE = `
-    <main id="terminal">
-      <nav>
-        <button data-tab="about" aria-selected="true"></button>
-        <button data-tab="projects" aria-selected="false"></button>
-      </nav>
-      <div class="screen" id="screen">
-        <section data-pane="about"><span id="boot-command"></span></section>
-        <section data-pane="projects" hidden></section>
-        <div id="output"></div>
-      </div>
-      <form id="prompt-form"><input id="prompt-input" /></form>
-      <span id="inner-text">click here</span>
-    </main>
-  `;
-  document.body.innerHTML = TERMINAL_FIXTURE;
+test("click in #terminal focuses the prompt input", () => {
   const win = fakeWindow("");
   bootstrap({ win, doc: document, typewriter: false });
-
-  // Spy on input.focus because happy-dom activeElement tracking is unreliable.
   const input = document.getElementById("prompt-input");
   let focusCalled = false;
   input.focus = () => {
     focusCalled = true;
   };
-
-  const target = document.getElementById("inner-text");
-  target.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+  document
+    .querySelector('[data-tab="about"]')
+    .dispatchEvent(new MouseEvent("click", { bubbles: true }));
   expect(focusCalled).toBe(true);
 });

@@ -10,16 +10,8 @@ beforeEach(() => {
   document.body.innerHTML = `
     <button data-tab="about" aria-selected="true"></button>
     <button data-tab="projects" aria-selected="false"></button>
-    <section data-pane="about"></section>
-    <section data-pane="projects" hidden></section>
     <div id="output"></div>
   `;
-});
-
-test("switchTab shows the target pane and hides the others", () => {
-  switchTab(document, "projects");
-  expect(document.querySelector('[data-pane="projects"]').hidden).toBe(false);
-  expect(document.querySelector('[data-pane="about"]').hidden).toBe(true);
 });
 
 test("switchTab updates aria-selected on the tab buttons", () => {
@@ -43,8 +35,8 @@ test("echoPrompt appends the prompt string plus the (escaped) command", () => {
   echoPrompt(document, "atalariq@portfolio:~$", "<b>hi</b>");
   const line = document.querySelector("#output").textContent;
   expect(line).toContain("atalariq@portfolio:~$");
-  expect(line).toContain("<b>hi</b>"); // shown literally, not parsed
-  expect(document.querySelector("#output b")).toBeNull(); // not injected as a real element
+  expect(line).toContain("<b>hi</b>");
+  expect(document.querySelector("#output b")).toBeNull();
 });
 
 test("clearOutput empties #output", () => {
