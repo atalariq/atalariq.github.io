@@ -1,5 +1,5 @@
 import { test, expect } from "bun:test";
-import { renderNeofetch } from "../terminal.js";
+import { renderNeofetch } from "../commands.js";
 import { profile, systemInfo } from "../data.js";
 
 test("output contains the user@host title", () => {
