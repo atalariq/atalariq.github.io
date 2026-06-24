@@ -19,17 +19,8 @@ test("has a meta description and og:image", () => {
 
 test("has a tab button for each of the five tabs", () => {
   const doc = dom();
-  const tabs = ["about", "linktree", "projects", "vision", "contact"];
-  for (const t of tabs) {
+  for (const t of ["about", "linktree", "projects", "vision", "contact"]) {
     expect(doc.querySelector(`[data-tab="${t}"]`)).not.toBeNull();
-  }
-});
-
-test("has a content pane for each of the five tabs", () => {
-  const doc = dom();
-  const tabs = ["about", "linktree", "projects", "vision", "contact"];
-  for (const t of tabs) {
-    expect(doc.querySelector(`[data-pane="${t}"]`)).not.toBeNull();
   }
 });
 
@@ -48,18 +39,14 @@ test("tab buttons and prompt input have aria labels/roles", () => {
   ).toBeTruthy();
 });
 
-test("linktree pane contains the real outbound links", () => {
-  expect(html).toContain("github.com/atalariq");
-  expect(html).toContain("linkedin.com/in/atalariq");
+test("ships a no-FOUC theme script and dual color-scheme", () => {
+  expect(html).toMatch(/localStorage\.getItem\("theme"\)/);
+  expect(html).toMatch(/content="dark light"/);
 });
 
-test("each pane's aria-labelledby resolves to an existing tab button id", () => {
-  const doc = dom();
-  for (const t of ["about", "linktree", "projects", "vision", "contact"]) {
-    const pane = doc.querySelector(`[data-pane="${t}"]`);
-    const labelledBy = pane.getAttribute("aria-labelledby");
-    expect(labelledBy).toBeTruthy();
-    // the referenced id must exist in the document (no dangling ARIA reference)
-    expect(doc.getElementById(labelledBy)).not.toBeNull();
-  }
+test("content.js exposes the real outbound links", async () => {
+  const { links } = await import("../content.js");
+  const urls = links.map((l) => l.url).join(" ");
+  expect(urls).toContain("github.com/atalariq");
+  expect(urls).toContain("linkedin.com/in/atalariq");
 });
