@@ -66,14 +66,16 @@ function pwd(_args, env) {
   return { html: `<p>${formatCwd(env.cwd)}</p>` };
 }
 
-// Registry is completed in Task 6; filesystem commands live here.
+// Filesystem commands; system/theme/easter-egg handlers are registered below.
 export const COMMANDS = { ls, cat, cd, pwd };
 
 /** Resolve, dispatch, and return a descriptor (or null for empty input). */
 export function runCommand(input, env) {
   const tok = tokenize(input);
   if (!tok) return null;
-  if (sectionCommands[tok.cmd] && tok.args.length === 0) {
+  // Section aliases (about, linktree, …) expand to their canonical command;
+  // extra args are ignored, the way a shell ignores args to an unknown alias.
+  if (sectionCommands[tok.cmd]) {
     return runCommand(sectionCommands[tok.cmd], env);
   }
   const handler = COMMANDS[tok.cmd];

@@ -202,10 +202,6 @@ a:focus {
   line-height: 1.55;
 }
 
-.pane[hidden] {
-  display: none;
-}
-
 .cmdline {
   color: var(--warning);
   margin-bottom: 0.4rem;
@@ -230,16 +226,6 @@ a:focus {
   color: var(--error);
 }
 .dim {
-  color: var(--muted);
-}
-
-.linklist {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-.linklist li::before {
-  content: "→ ";
   color: var(--muted);
 }
 
