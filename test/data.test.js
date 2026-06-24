@@ -1,10 +1,8 @@
 import { test, expect } from "bun:test";
 import {
   profile,
-  links,
-  projects,
   tabs,
-  builtins,
+  sectionCommands,
   helpText,
   systemInfo,
 } from "../data.js";
@@ -19,26 +17,10 @@ test("tabs are exactly the five spec tabs in order", () => {
   expect(tabs).toEqual(["about", "linktree", "projects", "vision", "contact"]);
 });
 
-test("builtins include help, clear, neofetch, fastfetch", () => {
-  for (const b of ["help", "clear", "neofetch", "fastfetch"]) {
-    expect(builtins).toContain(b);
-  }
-});
-
-test("links each have a name and an absolute url", () => {
-  expect(links.length).toBeGreaterThan(0);
-  for (const l of links) {
-    expect(typeof l.name).toBe("string");
-    expect(l.url).toMatch(/^https?:\/\//);
-  }
-});
-
-test("projects each have name, desc, and tags array", () => {
-  expect(projects.length).toBeGreaterThan(0);
-  for (const p of projects) {
-    expect(typeof p.name).toBe("string");
-    expect(typeof p.desc).toBe("string");
-    expect(Array.isArray(p.tags)).toBe(true);
+test("every tab has a canonical section command", () => {
+  for (const t of tabs) {
+    expect(typeof sectionCommands[t]).toBe("string");
+    expect(sectionCommands[t].length).toBeGreaterThan(0);
   }
 });
 

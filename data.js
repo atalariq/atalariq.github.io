@@ -1,4 +1,5 @@
-// data.js — portfolio content + config. Pure data, no logic.
+// data.js — config + system metadata. Pure data, no logic.
+// Site CONTENT (bio, projects, links, filesystem) lives in content.js.
 
 export const profile = {
   user: "atalariq",
@@ -9,47 +10,17 @@ export const profile = {
 
 export const tabs = ["about", "linktree", "projects", "vision", "contact"];
 
-export const builtins = ["help", "clear", "neofetch", "fastfetch"];
-
-export const links = [
-  { name: "GitHub", url: "https://github.com/atalariq" },
-  { name: "LinkedIn", url: "https://linkedin.com/in/atalariq" },
-  { name: "Instagram", url: "https://instagram.com/atalariq.dev" },
-  { name: "Journal", url: "https://journal.atalariq.dev" },
-  { name: "Medium", url: "https://medium.com/@atalariq" },
-];
-
-// Replace/extend with real projects. Content only — not wired to logic.
-export const projects = [
-  {
-    name: "atalariq.github.io",
-    desc: "This site — a full terminal-UI portfolio, pure static, no framework.",
-    tags: ["html", "css", "vanilla-js", "github-pages"],
-  },
-  {
-    name: "dotfiles",
-    desc: "Riced terminal-heavy workflow: editor, shell, multiplexer, the works.",
-    tags: ["bash", "neovim", "tmux", "linux"],
-  },
-];
-
-export const helpText = [
-  "available commands:",
-  "  about       — whoami: bio, status, stack",
-  "  linktree    — ls ~/links: where to find me",
-  "  projects    — ls ~/projects: things I've built",
-  "  vision      — cat ~/vision.md: where I'm headed",
-  "  contact     — cat ~/contact.md: get in touch",
-  "  help        — this message",
-  "  clear       — clear the screen",
-  "  neofetch    — system info (try it)",
-  "  fastfetch   — alias for neofetch",
-  "",
-  "tip: use the tab bar above, or type a command. ↑/↓ for history.",
-];
+// Each tab (and tab-bar click) injects its canonical shell command.
+export const sectionCommands = {
+  about: "cat about.md",
+  linktree: "ls links",
+  projects: "ls projects",
+  vision: "cat vision.md",
+  contact: "cat contact.md",
+};
 
 export const systemInfo = {
-  os: "Everforest Linux x86_64",
+  os: "Wana Linux x86_64",
   host: "atalariq@portfolio",
   kernel: "agentic-workflows-6.20",
   shell: "vanilla-js",
@@ -60,3 +31,17 @@ export const systemInfo = {
   focus: "Platform Engineering / DevOps / Cloud / SRE",
   langs: "Go · JS/TS (Bun)",
 };
+
+export const helpText = [
+  "available commands:",
+  "  ls [path]     — list a directory (try: ls, ls projects)",
+  "  cat <file>    — print a file (try: cat about.md)",
+  "  cd <path>     — change directory; pwd — print working dir",
+  "  about linktree projects vision contact — jump to a section",
+  "  whoami        — short bio          history — command history",
+  "  theme <mode>  — light | dark | toggle",
+  "  echo / date / uname / neofetch / fastfetch",
+  "  clear         — clear the screen   help — this message",
+  "",
+  "tip: Tab completes commands & paths. ↑/↓ history. Ctrl+L clears.",
+];
