@@ -1,26 +1,23 @@
 import { test, expect, beforeEach } from "bun:test";
 import { executeCommand, CommandHistory } from "../terminal.js";
-import { tabs, builtins, profile, helpText, systemInfo } from "../data.js";
+import { systemInfo, helpText } from "../data.js";
 
 function makeCtx() {
   document.body.innerHTML = `
     <button data-tab="about" aria-selected="true"></button>
     <button data-tab="projects" aria-selected="false"></button>
-    <section data-pane="about"></section>
-    <section data-pane="projects" hidden></section>
+    <span class="prompt-label">atalariq@portfolio:~$</span>
     <div id="output"></div>
   `;
   const hashes = [];
   return {
     ctx: {
       doc: document,
-      tabs,
-      builtins,
-      profile,
-      helpText,
-      systemInfo,
+      cwd: [],
       history: new CommandHistory(),
-      promptStr: "atalariq@portfolio:~$",
+      systemInfo,
+      helpText,
+      storage: { getItem: () => null, setItem: () => {} },
       setHash: (name) => hashes.push(name),
     },
     hashes,
@@ -31,11 +28,21 @@ beforeEach(() => {
   document.body.innerHTML = "";
 });
 
-test("a tab command switches the pane and updates the hash", () => {
+test("a section command highlights its tab and sets the hash", () => {
   const { ctx, hashes } = makeCtx();
   executeCommand(ctx, "projects");
-  expect(document.querySelector('[data-pane="projects"]').hidden).toBe(false);
+  expect(
+    document
+      .querySelector('[data-tab="projects"]')
+      .getAttribute("aria-selected"),
+  ).toBe("true");
   expect(hashes).toContain("projects");
+});
+
+test("cat about.md prints content into the log", () => {
+  const { ctx } = makeCtx();
+  executeCommand(ctx, "cat about.md");
+  expect(document.getElementById("output").textContent).toContain("Atalariq");
 });
 
 test("help prints the help text", () => {
@@ -59,6 +66,14 @@ test("clear empties the output log", () => {
   executeCommand(ctx, "help");
   executeCommand(ctx, "clear");
   expect(document.getElementById("output").innerHTML).toBe("");
+});
+
+test("cd updates the prompt label to the new cwd", () => {
+  const { ctx } = makeCtx();
+  executeCommand(ctx, "cd projects");
+  expect(document.querySelector(".prompt-label").textContent).toBe(
+    "atalariq@portfolio:~/projects$",
+  );
 });
 
 test("unknown command prints a red command-not-found error", () => {
