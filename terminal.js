@@ -1,5 +1,7 @@
 // terminal.js — pure logic + thin DOM wrappers. No top-level side effects.
 import { profile, tabs, builtins, helpText, systemInfo } from "./data.js";
+import { escapeHtml } from "./util.js";
+export { escapeHtml } from "./util.js";
 
 /**
  * Resolve a typed line into an action.
@@ -20,19 +22,6 @@ export function resolveCommand(input, { tabs, builtins }) {
 export function normalizeHash(hash, tabs, defaultTab) {
   const name = (hash || "").replace(/^#\/?/, "").toLowerCase();
   return tabs.includes(name) ? name : defaultTab;
-}
-
-const HTML_ESCAPES = {
-  "&": "&amp;",
-  "<": "&lt;",
-  ">": "&gt;",
-  '"': "&quot;",
-  "'": "&#39;",
-};
-
-/** Escape a string for safe insertion via innerHTML. */
-export function escapeHtml(s) {
-  return String(s).replace(/[&<>"']/g, (c) => HTML_ESCAPES[c]);
 }
 
 /** Shell-style command history with a cursor for ↑/↓ navigation. */
