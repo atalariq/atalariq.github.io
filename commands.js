@@ -205,3 +205,50 @@ Object.assign(COMMANDS, {
   fortune,
   exit,
 });
+
+/** All completable command words (registry + section aliases). */
+export function commandNames() {
+  return [...Object.keys(COMMANDS), ...Object.keys(sectionCommands)];
+}
+
+function commonPrefix(strs) {
+  if (strs.length === 0) return "";
+  let p = strs[0];
+  for (const s of strs) {
+    while (!s.startsWith(p)) p = p.slice(0, -1);
+  }
+  return p;
+}
+
+// Replace the trailing `frag` of `input` with a completion drawn from candidates.
+function completeFrom(input, frag, candidates) {
+  const matches = candidates.filter((c) => c.startsWith(frag));
+  if (matches.length === 0) return { value: input, candidates: [] };
+  const head = input.slice(0, input.length - frag.length);
+  if (matches.length === 1) {
+    const c = matches[0];
+    // dirs end with "/" (keep typing); everything else gets a space.
+    return { value: head + c + (c.endsWith("/") ? "" : " "), candidates: [] };
+  }
+  return { value: head + commonPrefix(matches), candidates: matches };
+}
+
+/**
+ * Complete the current input. First token → command names; an argument →
+ * filesystem entries under the cwd (descending any dir prefix in the fragment).
+ */
+export function complete(input, env) {
+  const lastSpace = input.lastIndexOf(" ");
+  if (lastSpace === -1) {
+    return completeFrom(input, input, commandNames());
+  }
+  const frag = input.slice(lastSpace + 1);
+  const slash = frag.lastIndexOf("/");
+  const dirArg = slash === -1 ? undefined : frag.slice(0, slash);
+  const base = slash === -1 ? frag : frag.slice(slash + 1);
+  const target = resolvePath(env.root, env.cwd, dirArg);
+  const entries =
+    target && target.node.type === "dir" ? listDir(target.node) : [];
+  const names = entries.map((e) => (e.type === "dir" ? e.name + "/" : e.name));
+  return completeFrom(input, base, names);
+}
