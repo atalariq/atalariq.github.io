@@ -61,3 +61,19 @@ test("resume assembles a CV from profile, bio, projects, and links", () => {
 test("cv is an alias for resume", () => {
   expect(runCommand("cv", env()).html).toContain("Atalariq Barra Hadinugraha");
 });
+
+test("cheat git renders a local cheatsheet", () => {
+  const d = runCommand("cheat git", env());
+  expect(d.html).toContain("git status");
+  expect(d.html).toContain("<pre");
+});
+
+test("cheat with no topic lists the local topics", () => {
+  expect(runCommand("cheat", env()).html).toContain("git");
+});
+
+test("cheat for an unknown topic links out to cht.sh", () => {
+  const d = runCommand("cheat kubernetes", env());
+  expect(d.html).toContain("cht.sh/kubernetes");
+  expect(d.html).toContain('target="_blank"');
+});

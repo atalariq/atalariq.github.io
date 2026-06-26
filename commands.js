@@ -3,7 +3,7 @@
 import { resolvePath, listDir, readFile, formatCwd } from "./filesystem.js";
 import { escapeHtml } from "./util.js";
 import { sectionCommands, manpages, bio } from "./data.js";
-import { projects, links } from "./content.js";
+import { projects, links, cheatsheets } from "./content.js";
 
 export function tokenize(input) {
   const raw = (input || "").trim();
@@ -270,6 +270,27 @@ function repo() {
 
 const stripScheme = (u) => u.replace(/^https?:\/\/(www\.)?/, "");
 
+function cheat(args) {
+  const topic = (args[0] || "").toLowerCase();
+  const topics = Object.keys(cheatsheets);
+  if (!topic)
+    return {
+      html: `<p>usage: <span class="yellow">cheat &lt;topic&gt;</span> — local: ${topics.join(", ")}</p>`,
+    };
+  const sheet = cheatsheets[topic];
+  if (sheet)
+    return {
+      html: `<pre class="cheat">${sheet.map(escapeHtml).join("\n")}</pre>`,
+    };
+  // Not curated locally: link out to cht.sh (a fetch would be CORS-blocked).
+  const url = `https://cht.sh/${encodeURIComponent(topic)}`;
+  return {
+    html:
+      `<p>no local cheatsheet for <span class="yellow">${escapeHtml(topic)}</span> — see ` +
+      `<a href="${url}" target="_blank" rel="noopener">cht.sh/${escapeHtml(topic)}</a></p>`,
+  };
+}
+
 function resume(_a, env) {
   const p = env.profile;
   const projSection = projects
@@ -357,6 +378,7 @@ Object.assign(COMMANDS, {
   repo,
   resume,
   cv: resume,
+  cheat,
   theme,
   sudo,
   vim,
