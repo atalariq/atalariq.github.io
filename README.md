@@ -7,7 +7,8 @@ Pure static site: HTML + CSS + native ES modules, no framework, no bundler.
 
 ## Develop
 
-- Serve locally: `bunx serve .`
+- Serve locally: `bun run dev` (the site uses ES modules — it must be served
+  over HTTP, not opened as a `file://` path)
 - Run unit tests: `bun test`
 - Run E2E tests: `bun run test:e2e` (Playwright against the real site at
   desktop + mobile viewports; uses the system Chrome, no browser download)

@@ -5,6 +5,7 @@
   "type": "module",
   "description": "Terminal-UI personal portfolio (atalariq.dev)",
   "scripts": {
+    "dev": "bunx serve .",
     "test": "bun test",
     "test:e2e": "playwright test"
   },
