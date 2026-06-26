@@ -237,6 +237,21 @@ export function bootstrap(opts = {}) {
     });
   });
 
+  const themeBtn = doc.getElementById("theme-toggle");
+  if (themeBtn) {
+    const reflect = () =>
+      themeBtn.setAttribute(
+        "aria-pressed",
+        String(doc.documentElement.getAttribute("data-theme") !== "light"),
+      );
+    themeBtn.addEventListener("click", () => {
+      applyTheme(ctx, "toggle");
+      reflect();
+      focusInput(doc);
+    });
+    reflect();
+  }
+
   const terminal = doc.getElementById("terminal");
   if (terminal) {
     terminal.addEventListener("click", (e) => {

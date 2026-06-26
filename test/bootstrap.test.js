@@ -134,3 +134,13 @@ test("click in #terminal focuses the prompt input", () => {
     .dispatchEvent(new MouseEvent("click", { bubbles: true }));
   expect(focusCalled).toBe(true);
 });
+
+test("clicking the theme toggle flips the theme and aria-pressed", () => {
+  const win = fakeWindow("");
+  document.documentElement.removeAttribute("data-theme");
+  bootstrap({ win, doc: document, typewriter: false });
+  const btn = document.getElementById("theme-toggle");
+  btn.click();
+  expect(document.documentElement.getAttribute("data-theme")).toBe("light");
+  expect(btn.getAttribute("aria-pressed")).toBe("false");
+});
