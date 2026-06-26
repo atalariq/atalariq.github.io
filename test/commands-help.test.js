@@ -48,3 +48,16 @@ test("repo links to the site source", () => {
     "github.com/atalariq/atalariq.github.io",
   );
 });
+
+test("resume assembles a CV from profile, bio, projects, and links", () => {
+  const d = runCommand("resume", env());
+  expect(d.html).toContain("Atalariq Barra Hadinugraha");
+  expect(d.html).toContain("UGM Sekolah Vokasi");
+  expect(d.html).toContain("wana");
+  expect(d.html).toContain("hi@atalariq.dev");
+  expect(d.html).toContain("github.com/atalariq");
+});
+
+test("cv is an alias for resume", () => {
+  expect(runCommand("cv", env()).html).toContain("Atalariq Barra Hadinugraha");
+});

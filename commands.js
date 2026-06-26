@@ -2,7 +2,8 @@
 // DESCRIPTOR (html / clear / theme / cd / tab / error). No DOM here.
 import { resolvePath, listDir, readFile, formatCwd } from "./filesystem.js";
 import { escapeHtml } from "./util.js";
-import { sectionCommands, manpages } from "./data.js";
+import { sectionCommands, manpages, bio } from "./data.js";
+import { projects, links } from "./content.js";
 
 export function tokenize(input) {
   const raw = (input || "").trim();
@@ -267,6 +268,33 @@ function repo() {
   };
 }
 
+const stripScheme = (u) => u.replace(/^https?:\/\/(www\.)?/, "");
+
+function resume(_a, env) {
+  const p = env.profile;
+  const projSection = projects
+    .slice(0, 3)
+    .map((pr) => {
+      const u = pr.url ? `  ${stripScheme(pr.url)}` : "";
+      return escapeHtml(`${pr.name.padEnd(16)}${pr.desc}${u}`);
+    })
+    .join("\n");
+  const social = links
+    .filter((l) => ["GitHub", "LinkedIn"].includes(l.name))
+    .map((l) => escapeHtml(stripScheme(l.url)))
+    .join(" · ");
+  return {
+    html:
+      `<pre class="resume"><span class="green">${escapeHtml(p.name)}</span>\n` +
+      `${escapeHtml(p.tagline)}\n` +
+      `${escapeHtml(bio.email)} · ${escapeHtml(bio.location)}\n\n` +
+      `<span class="yellow"># education</span>\n${escapeHtml(bio.education)}\n\n` +
+      `<span class="yellow"># stack</span>\n${escapeHtml(bio.stack.join(" · "))}\n\n` +
+      `<span class="yellow"># selected projects</span>\n${projSection}\n\n` +
+      `<span class="yellow"># links</span>\n${social}</pre>`,
+  };
+}
+
 function theme(args) {
   const mode = (args[0] || "toggle").toLowerCase();
   if (!["light", "dark", "toggle"].includes(mode)) {
@@ -327,6 +355,8 @@ Object.assign(COMMANDS, {
   man,
   whatis,
   repo,
+  resume,
+  cv: resume,
   theme,
   sudo,
   vim,
