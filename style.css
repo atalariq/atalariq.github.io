@@ -95,9 +95,18 @@ html {
 
 /* ===== Terminal chrome (wana semantic tokens) ===== */
 
+/* Subset of FiraCode/Symbols Nerd Font: only the git-branch glyph (U+E0A0),
+   used for the starship prompt. unicode-range scopes it to that codepoint. */
+@font-face {
+  font-family: "Nerd Glyphs";
+  src: url("fonts/nerd-glyphs.woff") format("woff");
+  unicode-range: U+E0A0;
+  font-display: swap;
+}
+
 :root {
-  /* Terminal display font layered on wana's mono stack. */
-  --font: "Fira Code", var(--font-mono);
+  /* Terminal display font: Fira Code, with a Nerd Font subset for glyphs. */
+  --font: "Fira Code", "Nerd Glyphs", var(--font-mono);
 }
 
 html,
