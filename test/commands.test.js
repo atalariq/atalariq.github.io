@@ -57,6 +57,9 @@ test("tree links draws branches with clickable urls and the linktree tab", () =>
   expect(d.html).toContain("└──");
   expect(d.html).toContain('href="https://github.com/atalariq"');
   expect(d.html).toContain("9 files");
+  // displayed url strips the scheme and a leading www.
+  expect(d.html).toContain(">last.fm/user/atalariq<");
+  expect(d.html).not.toContain(">www.last.fm");
 });
 
 test("tree of a file errors", () => {
