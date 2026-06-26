@@ -13,6 +13,20 @@ import { runCommand } from "./commands.js";
 import { formatCwd } from "./filesystem.js";
 import { handleKey } from "./terminal-keys.js";
 
+const GIT_GLYPH = ""; // Nerd Font git-branch glyph
+const BRANCH = "main";
+
+/** Starship-style info line: user, cwd (live), and git branch — as HTML. */
+export function renderPromptInfo(user, cwd) {
+  return (
+    `<span class="seg-user">${escapeHtml(user)}</span>` +
+    `<span class="seg-op"> in </span>` +
+    `<span class="seg-dir">${escapeHtml(formatCwd(cwd))}</span>` +
+    `<span class="seg-op"> on </span>` +
+    `<span class="seg-git">${GIT_GLYPH} ${BRANCH}</span>`
+  );
+}
+
 /** Map window.location.hash to a valid tab name, else defaultTab. */
 export function normalizeHash(hash, tabs, defaultTab) {
   const name = (hash || "").replace(/^#\/?/, "").toLowerCase();
