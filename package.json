@@ -5,9 +5,11 @@
   "type": "module",
   "description": "Terminal-UI personal portfolio (atalariq.dev)",
   "scripts": {
-    "test": "bun test"
+    "test": "bun test",
+    "test:e2e": "playwright test"
   },
   "devDependencies": {
-    "@happy-dom/global-registrator": "^15.0.0"
+    "@happy-dom/global-registrator": "^15.0.0",
+    "@playwright/test": "^1.61.1"
   }
 }

@@ -25,5 +25,11 @@ node_modules/
 bun.lockb
 bun.lock
 
+# Playwright E2E artifacts
+test-results/
+playwright-report/
+blob-report/
+.playwright/
+
 # original brainstorm note (not part of the site)
 TODO.md

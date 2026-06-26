@@ -8,7 +8,9 @@ Pure static site: HTML + CSS + native ES modules, no framework, no bundler.
 ## Develop
 
 - Serve locally: `bunx serve .`
-- Run tests: `bun test`
+- Run unit tests: `bun test`
+- Run E2E tests: `bun run test:e2e` (Playwright against the real site at
+  desktop + mobile viewports; uses the system Chrome, no browser download)
 
 Content lives in `content.js` — the virtual filesystem tree plus the prose
 renderers (edit this to update the site); `data.js` holds config. The terminal
