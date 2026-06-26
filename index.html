@@ -42,8 +42,10 @@
     <main id="terminal" class="terminal" aria-label="terminal portfolio">
       <!-- Title bar -->
       <header class="titlebar">
-        <span class="prompt-label">atalariq@portfolio:~$</span>
-        <span class="titlebar-dots" aria-hidden="true">● ● ●</span>
+        <span class="window-title">atalariq@portfolio</span>
+        <span class="titlebar-right">
+          <span class="titlebar-dots" aria-hidden="true">● ● ●</span>
+        </span>
       </header>
 
       <!-- Tab bar -->
@@ -107,20 +109,23 @@
 
         <!-- Prompt: follows the output, scrolls with it -->
         <form id="prompt-form" class="promptbar" autocomplete="off">
-          <label for="prompt-input" class="prompt-label"
-            >atalariq@portfolio:~$</label
-          >
-          <input
-            id="prompt-input"
-            class="prompt-input"
-            type="text"
-            name="cmd"
-            aria-label="terminal command input"
-            autocomplete="off"
-            autocapitalize="off"
-            autocorrect="off"
-            spellcheck="false"
-          />
+          <div class="prompt-info" id="prompt-info"></div>
+          <div class="prompt-line">
+            <label for="prompt-input" class="prompt-char" id="prompt-char"
+              >❯</label
+            >
+            <input
+              id="prompt-input"
+              class="prompt-input"
+              type="text"
+              name="cmd"
+              aria-label="terminal command input"
+              autocomplete="off"
+              autocapitalize="off"
+              autocorrect="off"
+              spellcheck="false"
+            />
+          </div>
         </form>
       </div>
     </main>

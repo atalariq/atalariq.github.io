@@ -3,7 +3,8 @@ import { bootstrap } from "../terminal.js";
 
 const FIXTURE = `
   <main id="terminal">
-    <span class="prompt-label">atalariq@portfolio:~$</span>
+    <span class="window-title">atalariq@portfolio</span>
+    <button id="theme-toggle" aria-pressed="true"></button>
     <nav>
       <button data-tab="about" aria-selected="true"></button>
       <button data-tab="projects" aria-selected="false"></button>
@@ -11,7 +12,13 @@ const FIXTURE = `
     </nav>
     <div class="screen" id="screen">
       <div id="output"></div>
-      <form id="prompt-form"><label class="prompt-label">x</label><input id="prompt-input" /></form>
+      <form id="prompt-form" class="promptbar">
+        <div class="prompt-info" id="prompt-info"></div>
+        <div class="prompt-line">
+          <label class="prompt-char" id="prompt-char">❯</label>
+          <input id="prompt-input" />
+        </div>
+      </form>
     </div>
   </main>
 `;

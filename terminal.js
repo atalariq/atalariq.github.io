@@ -88,10 +88,12 @@ export function appendOutput(doc, html) {
   out.appendChild(line);
 }
 
-export function echoPrompt(doc, promptStr, input) {
+export function echoPrompt(doc, user, cwd, input) {
   appendOutput(
     doc,
-    `<span class="dim">${escapeHtml(promptStr)}</span> <span class="yellow">${escapeHtml(input)}</span>`,
+    `<div class="prompt-info">${renderPromptInfo(user, cwd)}</div>` +
+      `<div class="prompt-line"><span class="prompt-char">❯</span> ` +
+      `<span class="cmd">${escapeHtml(input)}</span></div>`,
   );
 }
 
@@ -104,16 +106,12 @@ export function focusInput(doc) {
   if (input) input.focus();
 }
 
-/** Current prompt string, reflecting cwd: atalariq@portfolio:~/projects$ */
-function promptFor(ctx) {
-  return `${profile.user}@${profile.host}:${formatCwd(ctx.cwd)}$`;
-}
-
-/** Update every prompt label in the DOM (titlebar + input label). */
-function syncPromptLabels(ctx) {
-  ctx.doc.querySelectorAll(".prompt-label").forEach((el) => {
-    el.textContent = promptFor(ctx);
-  });
+/** Re-render the live info line and the error state of the live `❯`. */
+function syncPrompt(ctx) {
+  const info = ctx.doc.getElementById("prompt-info");
+  if (info) info.innerHTML = renderPromptInfo(profile.user, ctx.cwd);
+  const char = ctx.doc.getElementById("prompt-char");
+  if (char) char.classList.toggle("is-error", !!ctx.lastError);
 }
 
 /** Set <html data-theme>, persist, and reflect in storage. */
@@ -131,10 +129,7 @@ export function applyTheme(ctx, mode) {
 /** Apply a command descriptor to the DOM + ctx state. */
 function applyDescriptor(ctx, d) {
   if (d.clear) clearOutput(ctx.doc);
-  if (d.cd) {
-    ctx.cwd = d.cd;
-    syncPromptLabels(ctx);
-  }
+  if (d.cd) ctx.cwd = d.cd;
   if (d.theme) applyTheme(ctx, d.theme);
   if (d.tab) {
     switchTab(ctx.doc, d.tab);
@@ -162,8 +157,10 @@ function envFor(ctx) {
 export function executeCommand(ctx, rawInput) {
   const desc = runCommand(rawInput, envFor(ctx));
   if (desc === null) return; // empty input
-  echoPrompt(ctx.doc, promptFor(ctx), rawInput.trim());
+  echoPrompt(ctx.doc, profile.user, ctx.cwd, rawInput.trim());
   applyDescriptor(ctx, desc);
+  ctx.lastError = !!desc.error;
+  syncPrompt(ctx);
   ctx.history.add(rawInput);
 }
 
@@ -183,9 +180,10 @@ async function playBoot(ctx, opts) {
   }
   const line = doc.createElement("div");
   line.innerHTML =
-    `<span class="dim">${escapeHtml(promptFor(ctx))}</span> ` +
-    `<span class="yellow" id="boot-command"></span>` +
-    `<span class="cursor-inline" aria-hidden="true"></span>`;
+    `<div class="prompt-info">${renderPromptInfo(profile.user, ctx.cwd)}</div>` +
+    `<div class="prompt-line"><span class="prompt-char">❯</span> ` +
+    `<span class="cmd" id="boot-command"></span>` +
+    `<span class="cursor-inline" aria-hidden="true"></span></div>`;
   out.appendChild(line);
   const span = line.querySelector("#boot-command");
   await typeText(span, "whoami", 70, opts.schedule);
@@ -193,6 +191,8 @@ async function playBoot(ctx, opts) {
   if (cursor) cursor.remove();
   const desc = runCommand("whoami", envFor(ctx));
   applyDescriptor(ctx, desc);
+  ctx.lastError = !!desc.error;
+  syncPrompt(ctx);
   ctx.history.add("whoami");
 }
 
@@ -205,6 +205,7 @@ export function bootstrap(opts = {}) {
   const ctx = {
     doc,
     cwd: [],
+    lastError: false,
     history: new CommandHistory(),
     systemInfo: opts.systemInfo || systemInfo,
     helpText: opts.helpText || helpText,
@@ -250,7 +251,7 @@ export function bootstrap(opts = {}) {
 
   const initial = normalizeHash(win.location.hash, tabs, "about");
   switchTab(doc, initial);
-  syncPromptLabels(ctx);
+  syncPrompt(ctx);
   focusInput(doc);
 
   if (initial === "about") {
