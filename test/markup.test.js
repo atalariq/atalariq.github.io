@@ -24,11 +24,12 @@ test("has a tab button for each of the five tabs", () => {
   }
 });
 
-test("has the prompt input, output log, and boot-command span", () => {
+test("has the prompt input and output log, with the prompt inside the screen", () => {
   const doc = dom();
   expect(doc.getElementById("prompt-input")).not.toBeNull();
   expect(doc.getElementById("output")).not.toBeNull();
-  expect(doc.getElementById("boot-command")).not.toBeNull();
+  // The live prompt must live inside the scroll log so it follows the output.
+  expect(doc.querySelector("#screen #prompt-form")).not.toBeNull();
 });
 
 test("tab buttons and prompt input have aria labels/roles", () => {

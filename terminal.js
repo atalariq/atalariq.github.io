@@ -153,10 +153,33 @@ export function executeCommand(ctx, rawInput) {
   ctx.history.add(rawInput);
 }
 
-async function playBoot(doc, schedule) {
-  const el = doc.getElementById("boot-command");
-  if (!el) return;
-  await typeText(el, "whoami", 70, schedule);
+/**
+ * Boot intro: run `whoami` as the first command. With the typewriter on, the
+ * command is typed into an echoed prompt line before its output is printed;
+ * with it off (tests), the command runs instantly. Either way the live prompt
+ * ends up below the output, like a real shell.
+ */
+async function playBoot(ctx, opts) {
+  const doc = ctx.doc;
+  const out = doc.getElementById("output");
+  if (!out) return;
+  if (opts.typewriter === false) {
+    executeCommand(ctx, "whoami");
+    return;
+  }
+  const line = doc.createElement("div");
+  line.innerHTML =
+    `<span class="dim">${escapeHtml(promptFor(ctx))}</span> ` +
+    `<span class="yellow" id="boot-command"></span>` +
+    `<span class="cursor-inline" aria-hidden="true"></span>`;
+  out.appendChild(line);
+  const span = line.querySelector("#boot-command");
+  await typeText(span, "whoami", 70, opts.schedule);
+  const cursor = line.querySelector(".cursor-inline");
+  if (cursor) cursor.remove();
+  const desc = runCommand("whoami", envFor(ctx));
+  applyDescriptor(ctx, desc);
+  ctx.history.add("whoami");
 }
 
 export function bootstrap(opts = {}) {
@@ -217,7 +240,7 @@ export function bootstrap(opts = {}) {
   focusInput(doc);
 
   if (initial === "about") {
-    if (opts.typewriter !== false) playBoot(doc, opts.schedule);
+    playBoot(ctx, opts);
   } else {
     executeCommand(ctx, sectionCommands[initial]);
   }

@@ -89,6 +89,7 @@ export const tree = {
       children: links.map((l) => ({
         type: "file",
         name: linkSlug(l),
+        url: l.url,
         render: () =>
           `<p><a href="${l.url}">${l.url.replace(/^https?:\/\//, "")}</a></p>`,
       })),
@@ -99,6 +100,8 @@ export const tree = {
       children: projects.map((p) => ({
         type: "file",
         name: p.name,
+        desc: p.desc,
+        tags: p.tags,
         render: () => renderProject(p),
       })),
     },

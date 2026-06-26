@@ -42,6 +42,27 @@ test("ls projects sets the projects tab", () => {
   expect(d.html).toContain("dotfiles");
 });
 
+test("ls -l projects shows a long listing with a mode and description", () => {
+  const d = runCommand("ls -l projects", env());
+  expect(d.tab).toBe("projects");
+  expect(d.html).toContain("-rw-r--r--");
+  expect(d.html).toContain("dotfiles");
+  expect(d.html).toContain("Riced terminal-heavy workflow");
+});
+
+test("tree links draws branches with clickable urls and the linktree tab", () => {
+  const d = runCommand("tree links", env());
+  expect(d.tab).toBe("linktree");
+  expect(d.html).toContain("├──");
+  expect(d.html).toContain("└──");
+  expect(d.html).toContain('href="https://github.com/atalariq"');
+  expect(d.html).toContain("5 files");
+});
+
+test("tree of a file errors", () => {
+  expect(runCommand("tree about.md", env()).error).toContain("Not a directory");
+});
+
 test("ls of a missing path errors", () => {
   expect(runCommand("ls nope", env()).error).toContain("no such file");
 });

@@ -151,9 +151,16 @@ a:focus {
   color: var(--muted);
   font-size: 0.85rem;
 }
+.titlebar .prompt-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .titlebar-dots {
   color: var(--muted);
   letter-spacing: 0.15em;
+  flex: 0 0 auto;
+  padding-left: var(--space-s);
 }
 
 /* ============================ Tab bar ============================ */
@@ -197,20 +204,36 @@ a:focus {
 
 .screen {
   flex: 1 1 auto;
+  min-width: 0;
   overflow-y: auto;
   padding: var(--space-m);
   line-height: 1.55;
 }
 
-.cmdline {
-  color: var(--warning);
-  margin-bottom: 0.4rem;
-}
 .cmd-output {
   margin: 0 0 1.2rem;
+  min-width: 0;
 }
 .cmd-output p {
   margin: 0.15rem 0;
+}
+
+/* Wide blocks (tree, ls -l, ascii art) scroll horizontally instead of
+   forcing the whole terminal wider than the viewport. */
+pre {
+  margin: 0.15rem 0;
+  max-width: 100%;
+  overflow-x: auto;
+}
+.tree a {
+  color: var(--info);
+}
+
+/* `ls` lays its entries out in a wrapping grid so they never overflow. */
+.ls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15rem 1.4rem;
 }
 
 .green {
@@ -263,13 +286,12 @@ a:focus {
 
 /* ============================ Prompt ============================ */
 
+/* The prompt is the last line of the scroll log, not a fixed bar. */
 .promptbar {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   gap: 0.5rem;
-  padding: var(--space-xs) var(--space-m);
-  border-top: 1px solid var(--surface);
-  background: var(--bg);
+  margin-top: 0.2rem;
 }
 .prompt-label {
   color: var(--accent);
@@ -316,7 +338,20 @@ a:focus {
     border: none;
     border-radius: 0;
   }
+  .screen {
+    padding: var(--space-s);
+  }
+  .tab {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.85rem;
+  }
   .prompt-input {
     font-size: 0.9rem;
+  }
+  /* Wrap long ls -l / tree rows on phones instead of scrolling sideways. */
+  pre.long,
+  pre.tree {
+    white-space: pre-wrap;
+    word-break: break-word;
   }
 }

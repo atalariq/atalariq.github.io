@@ -10,10 +10,9 @@ const FIXTURE = `
       <button data-tab="vision" aria-selected="false"></button>
     </nav>
     <div class="screen" id="screen">
-      <section id="pane-about"><span id="boot-command"></span></section>
       <div id="output"></div>
+      <form id="prompt-form"><label class="prompt-label">x</label><input id="prompt-input" /></form>
     </div>
-    <form id="prompt-form"><label class="prompt-label">x</label><input id="prompt-input" /></form>
   </main>
 `;
 

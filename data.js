@@ -13,8 +13,8 @@ export const tabs = ["about", "linktree", "projects", "vision", "contact"];
 // Each tab (and tab-bar click) injects its canonical shell command.
 export const sectionCommands = {
   about: "cat about.md",
-  linktree: "ls links",
-  projects: "ls projects",
+  linktree: "tree links",
+  projects: "ls -l projects",
   vision: "cat vision.md",
   contact: "cat contact.md",
 };
@@ -34,7 +34,8 @@ export const systemInfo = {
 
 export const helpText = [
   "available commands:",
-  "  ls [path]     — list a directory (try: ls, ls projects)",
+  "  ls [-l] [path] — list a directory (try: ls, ls -l projects)",
+  "  tree [path]   — list a directory as a tree (try: tree links)",
   "  cat <file>    — print a file (try: cat about.md)",
   "  cd <path>     — change directory; pwd — print working dir",
   "  about linktree projects vision contact — jump to a section",

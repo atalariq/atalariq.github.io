@@ -45,9 +45,11 @@ beforeEach(async () => {
   await loadRealIndex();
 });
 
-test("boots with the about section visible and the about tab active", () => {
+test("boots by running whoami with the about tab active", () => {
   bootstrap({ win: fakeWindow(""), doc: document, typewriter: false });
-  expect(document.getElementById("pane-about")).not.toBeNull();
+  expect(document.getElementById("output").textContent).toContain(
+    "Atalariq Barra Hadinugraha",
+  );
   expect(
     document.querySelector('[data-tab="about"]').getAttribute("aria-selected"),
   ).toBe("true");
