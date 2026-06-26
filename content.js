@@ -48,6 +48,85 @@ export const projects = [
   },
 ];
 
+// Curated cheatsheets for the `cheat` command. Topics not listed here link out
+// to cht.sh. Keep these practical and short — the tools atalariq is re-learning.
+export const cheatsheets = {
+  git: [
+    "# git — everyday",
+    "git status                 working tree status",
+    "git add -p                 stage hunks interactively",
+    'git commit -m "msg"        commit staged changes',
+    "git switch -c <branch>     create + switch branch",
+    "git restore <file>         discard unstaged changes",
+    "git log --oneline --graph  compact history",
+    "git rebase -i <base>       interactive rebase",
+    "git stash / stash pop      shelve / restore changes",
+  ],
+  vim: [
+    "# vim — survival",
+    ":w  :q  :wq  :q!           write / quit / both / force-quit",
+    "i  a  o                    insert before / after / new line",
+    "dd  yy  p                  delete / yank / paste line",
+    "/pattern   n  N            search, next / prev match",
+    ":%s/old/new/g              replace in file",
+    "gg  G                      top / bottom of file",
+    'ciw   ci"                  change inner word / quotes',
+    ":noh                       clear search highlight",
+  ],
+  tmux: [
+    "# tmux  (prefix = Ctrl-b)",
+    "tmux new -s <name>         new named session",
+    "prefix c   prefix ,        new window / rename window",
+    'prefix %   prefix "        split vertical / horizontal',
+    "prefix <arrow>             move between panes",
+    "prefix z                   zoom pane toggle",
+    "prefix d                   detach session",
+    "tmux a -t <name>           attach session",
+  ],
+  fish: [
+    "# fish shell",
+    "funcsave <name>            persist a function",
+    "abbr -a g git              add an abbreviation",
+    "set -Ux VAR value          universal exported var",
+    "type <cmd>                 what a command resolves to",
+    "alt+.                      insert last argument",
+    "fish_config               open the web config",
+  ],
+  docker: [
+    "# docker",
+    "docker ps -a               list containers",
+    "docker compose up -d       start services detached",
+    "docker compose logs -f     follow logs",
+    "docker exec -it <c> sh     shell into a container",
+    "docker images              list images",
+    "docker system prune        reclaim space",
+  ],
+  tar: [
+    "# tar",
+    "tar -czf out.tgz dir/      create gzip archive",
+    "tar -xzf out.tgz           extract gzip archive",
+    "tar -tzf out.tgz           list archive contents",
+    "tar -xzf a.tgz -C /dest    extract to a directory",
+  ],
+  ssh: [
+    "# ssh",
+    "ssh user@host              connect",
+    "ssh-keygen -t ed25519      new key pair",
+    "ssh-copy-id user@host      install your key",
+    "~/.ssh/config              per-host options",
+    "ssh -L 8080:localhost:80 h local port forward",
+    "scp file user@host:/path   copy over ssh",
+  ],
+  fzf: [
+    "# fzf",
+    "fzf                        fuzzy-find stdin",
+    "ctrl-r                     fuzzy history (with binding)",
+    "ctrl-t                     fuzzy file into command line",
+    "vim $(fzf)                 open a chosen file",
+    "fzf --preview 'cat {}'     preview the selection",
+  ],
+};
+
 // ── Extension placeholders ───────────────────────────────────────────────
 // To add a section later: fill one of these arrays AND add a node to `tree`
 // below. Example for certs:

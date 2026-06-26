@@ -4,6 +4,7 @@ import { bootstrap } from "../terminal.js";
 const FIXTURE = `
   <main id="terminal">
     <span class="window-title">atalariq@portfolio</span>
+    <button id="help-toggle"></button>
     <button id="theme-toggle" aria-pressed="true"></button>
     <nav>
       <button data-tab="about" aria-selected="true"></button>
@@ -19,6 +20,9 @@ const FIXTURE = `
           <input id="prompt-input" />
         </div>
       </form>
+    </div>
+    <div id="shortcut-overlay" hidden>
+      <button id="overlay-close"></button>
     </div>
   </main>
 `;
@@ -143,4 +147,28 @@ test("clicking the theme toggle flips the theme and aria-pressed", () => {
   btn.click();
   expect(document.documentElement.getAttribute("data-theme")).toBe("light");
   expect(btn.getAttribute("aria-pressed")).toBe("false");
+});
+
+test("the shortcut overlay opens via the ? button and closes on Escape", () => {
+  const win = fakeWindow("");
+  bootstrap({ win, doc: document, typewriter: false });
+  const overlay = document.getElementById("shortcut-overlay");
+  expect(overlay.hidden).toBe(true);
+  document.getElementById("help-toggle").click();
+  expect(overlay.hidden).toBe(false);
+  document.dispatchEvent(
+    new KeyboardEvent("keydown", { key: "Escape", bubbles: true }),
+  );
+  expect(overlay.hidden).toBe(true);
+});
+
+test("the `keys` command opens the overlay", () => {
+  const win = fakeWindow("");
+  bootstrap({ win, doc: document, typewriter: false });
+  const input = document.getElementById("prompt-input");
+  input.value = "keys";
+  document
+    .getElementById("prompt-form")
+    .dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+  expect(document.getElementById("shortcut-overlay").hidden).toBe(false);
 });

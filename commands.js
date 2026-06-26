@@ -2,7 +2,8 @@
 // DESCRIPTOR (html / clear / theme / cd / tab / error). No DOM here.
 import { resolvePath, listDir, readFile, formatCwd } from "./filesystem.js";
 import { escapeHtml } from "./util.js";
-import { sectionCommands } from "./data.js";
+import { sectionCommands, manpages, bio } from "./data.js";
+import { projects, links, cheatsheets } from "./content.js";
 
 export function tokenize(input) {
   const raw = (input || "").trim();
@@ -238,6 +239,87 @@ function uname(args, env) {
   }
   return { html: `<p>${base}</p>` };
 }
+function man(args) {
+  const name = args[0];
+  if (!name)
+    return {
+      html: `<p>What manual page do you want? Try: <span class="yellow">man ls</span></p>`,
+    };
+  const m = manpages[name];
+  if (!m) return { error: `No manual entry for ${name}` };
+  return {
+    html:
+      `<pre>NAME\n    ${escapeHtml(name)} — ${escapeHtml(m.summary)}\n\n` +
+      `USAGE\n    ${escapeHtml(m.usage)}</pre>`,
+  };
+}
+
+function whatis(args) {
+  const name = args[0];
+  const m = manpages[name];
+  if (!m) return { error: `${name || ""}: nothing appropriate.` };
+  return { html: `<p>${escapeHtml(name)} — ${escapeHtml(m.summary)}</p>` };
+}
+
+function repo() {
+  const url = "https://github.com/atalariq/atalariq.github.io";
+  return {
+    html: `<p><a href="${url}">${url.replace(/^https?:\/\//, "")}</a></p>`,
+  };
+}
+
+function keys() {
+  return { overlay: true };
+}
+
+const stripScheme = (u) => u.replace(/^https?:\/\/(www\.)?/, "");
+
+function cheat(args) {
+  const topic = (args[0] || "").toLowerCase();
+  const topics = Object.keys(cheatsheets);
+  if (!topic)
+    return {
+      html: `<p>usage: <span class="yellow">cheat &lt;topic&gt;</span> — local: ${topics.join(", ")}</p>`,
+    };
+  const sheet = cheatsheets[topic];
+  if (sheet)
+    return {
+      html: `<pre class="cheat">${sheet.map(escapeHtml).join("\n")}</pre>`,
+    };
+  // Not curated locally: link out to cht.sh (a fetch would be CORS-blocked).
+  const url = `https://cht.sh/${encodeURIComponent(topic)}`;
+  return {
+    html:
+      `<p>no local cheatsheet for <span class="yellow">${escapeHtml(topic)}</span> — see ` +
+      `<a href="${url}" target="_blank" rel="noopener">cht.sh/${escapeHtml(topic)}</a></p>`,
+  };
+}
+
+function resume(_a, env) {
+  const p = env.profile;
+  const projSection = projects
+    .slice(0, 3)
+    .map((pr) => {
+      const u = pr.url ? `  ${stripScheme(pr.url)}` : "";
+      return escapeHtml(`${pr.name.padEnd(16)}${pr.desc}${u}`);
+    })
+    .join("\n");
+  const social = links
+    .filter((l) => ["GitHub", "LinkedIn"].includes(l.name))
+    .map((l) => escapeHtml(stripScheme(l.url)))
+    .join(" · ");
+  return {
+    html:
+      `<pre class="resume"><span class="green">${escapeHtml(p.name)}</span>\n` +
+      `${escapeHtml(p.tagline)}\n` +
+      `${escapeHtml(bio.email)} · ${escapeHtml(bio.location)}\n\n` +
+      `<span class="yellow"># education</span>\n${escapeHtml(bio.education)}\n\n` +
+      `<span class="yellow"># stack</span>\n${escapeHtml(bio.stack.join(" · "))}\n\n` +
+      `<span class="yellow"># selected projects</span>\n${projSection}\n\n` +
+      `<span class="yellow"># links</span>\n${social}</pre>`,
+  };
+}
+
 function theme(args) {
   const mode = (args[0] || "toggle").toLowerCase();
   if (!["light", "dark", "toggle"].includes(mode)) {
@@ -295,6 +377,14 @@ Object.assign(COMMANDS, {
   echo,
   date,
   uname,
+  man,
+  whatis,
+  repo,
+  resume,
+  cv: resume,
+  cheat,
+  keys,
+  shortcuts: keys,
   theme,
   sudo,
   vim,

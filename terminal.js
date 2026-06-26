@@ -106,6 +106,21 @@ export function focusInput(doc) {
   if (input) input.focus();
 }
 
+export function openOverlay(doc) {
+  const ov = doc.getElementById("shortcut-overlay");
+  if (!ov) return;
+  ov.hidden = false;
+  const close = doc.getElementById("overlay-close");
+  if (close) close.focus();
+}
+
+export function closeOverlay(doc) {
+  const ov = doc.getElementById("shortcut-overlay");
+  if (!ov || ov.hidden) return;
+  ov.hidden = true;
+  focusInput(doc);
+}
+
 /** Re-render the live info line and the error state of the live `❯`. */
 function syncPrompt(ctx) {
   const info = ctx.doc.getElementById("prompt-info");
@@ -138,6 +153,7 @@ function applyDescriptor(ctx, d) {
   if (d.error)
     appendOutput(ctx.doc, `<span class="err">${escapeHtml(d.error)}</span>`);
   if (d.html) appendOutput(ctx.doc, d.html);
+  if (d.overlay) openOverlay(ctx.doc);
 }
 
 function envFor(ctx) {
@@ -251,6 +267,35 @@ export function bootstrap(opts = {}) {
     });
     reflect();
   }
+
+  const helpBtn = doc.getElementById("help-toggle");
+  if (helpBtn) helpBtn.addEventListener("click", () => openOverlay(doc));
+
+  const overlay = doc.getElementById("shortcut-overlay");
+  if (overlay) {
+    const closeBtn = doc.getElementById("overlay-close");
+    if (closeBtn) closeBtn.addEventListener("click", () => closeOverlay(doc));
+    overlay.addEventListener("click", (e) => {
+      if (e.target === overlay) closeOverlay(doc);
+    });
+  }
+
+  doc.addEventListener("keydown", (e) => {
+    if (e.ctrlKey && e.key === "/") {
+      e.preventDefault();
+      openOverlay(doc);
+      return;
+    }
+    if (overlay && !overlay.hidden) {
+      if (e.key === "Escape") closeOverlay(doc);
+      else if (e.key === "Tab") {
+        // minimal focus trap: keep focus on the close button while open
+        e.preventDefault();
+        const close = doc.getElementById("overlay-close");
+        if (close) close.focus();
+      }
+    }
+  });
 
   const terminal = doc.getElementById("terminal");
   if (terminal) {

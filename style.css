@@ -382,6 +382,80 @@ pre {
 [data-theme="dark"] .icon-moon {
   display: inline-block;
 }
+
+/* ============================ Shortcut overlay ============================ */
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  font-family: var(--font);
+  font-size: 0.95rem;
+  line-height: 1;
+  padding: 0.15rem 0.4rem;
+  border-radius: var(--radius);
+}
+.icon-btn:hover {
+  color: var(--text);
+}
+.icon-btn:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-m);
+  background: color-mix(in oklch, var(--bg) 70%, transparent);
+  z-index: 10;
+}
+.overlay[hidden] {
+  display: none;
+}
+.overlay-card {
+  width: min(440px, 100%);
+  background: var(--surface);
+  border: 1px solid var(--overlay);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: var(--space-m);
+}
+.overlay-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-s);
+}
+.shortcut-list {
+  margin: 0;
+  display: grid;
+  gap: 0.35rem 0.8rem;
+}
+.shortcut-list > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.shortcut-list dt {
+  color: var(--warning);
+  white-space: nowrap;
+}
+.shortcut-list dd {
+  margin: 0;
+  text-align: right;
+}
+.overlay-foot {
+  margin: var(--space-s) 0 0;
+  font-size: 0.85rem;
+}
 .prompt-input {
   flex: 1 1 auto;
   background: transparent;
