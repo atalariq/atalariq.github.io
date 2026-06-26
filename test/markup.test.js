@@ -30,6 +30,8 @@ test("has the prompt input and output log, with the prompt inside the screen", (
   expect(doc.getElementById("output")).not.toBeNull();
   // The live prompt must live inside the scroll log so it follows the output.
   expect(doc.querySelector("#screen #prompt-form")).not.toBeNull();
+  expect(doc.getElementById("prompt-info")).not.toBeNull();
+  expect(doc.getElementById("prompt-char")).not.toBeNull();
 });
 
 test("tab buttons and prompt input have aria labels/roles", () => {

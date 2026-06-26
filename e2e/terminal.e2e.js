@@ -68,7 +68,7 @@ test("projects renders a long listing with descriptions", async ({ page }) => {
   await expect(long).toBeVisible();
   await expect(long).toContainText("-rw-r--r--");
   await expect(long).toContainText("dotfiles");
-  await expect(long).toContainText("Riced terminal-heavy workflow");
+  await expect(long).toContainText("symlink script");
 });
 
 test("clicking a tab prints its section and highlights it", async ({
@@ -93,4 +93,36 @@ test("wide output never forces horizontal page scroll", async ({ page }) => {
     return el.scrollWidth - el.clientWidth;
   });
   expect(overflow).toBeLessThanOrEqual(1);
+});
+
+test("the prompt is a two-line starship prompt that tracks cwd", async ({
+  page,
+}) => {
+  await expect(page.locator("#prompt-char")).toHaveText("❯");
+  await expect(page.locator("#prompt-info")).toContainText("atalariq");
+  await expect(page.locator("#prompt-info")).toContainText("main");
+  await run(page, "cd projects");
+  await expect(page.locator("#prompt-info .seg-dir")).toHaveText("~/projects");
+});
+
+test("the prompt caret turns red after an error, green after success", async ({
+  page,
+}) => {
+  await run(page, "definitely-not-a-command");
+  await expect(page.locator("#prompt-char")).toHaveClass(/is-error/);
+  await run(page, "help");
+  await expect(page.locator("#prompt-char")).not.toHaveClass(/is-error/);
+});
+
+test("the theme toggle flips and persists across reload", async ({ page }) => {
+  await page.locator("#theme-toggle").click();
+  const after = await page.evaluate(() =>
+    document.documentElement.getAttribute("data-theme"),
+  );
+  await page.reload();
+  await expect(page.locator("#output")).toContainText("Atalariq");
+  const persisted = await page.evaluate(() =>
+    document.documentElement.getAttribute("data-theme"),
+  );
+  expect(persisted).toBe(after);
 });

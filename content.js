@@ -4,22 +4,47 @@
 
 export const links = [
   { name: "GitHub", url: "https://github.com/atalariq" },
+  { name: "GitLab", url: "https://gitlab.com/atalariq" },
   { name: "LinkedIn", url: "https://linkedin.com/in/atalariq" },
   { name: "Instagram", url: "https://instagram.com/atalariq.dev" },
-  { name: "Journal", url: "https://journal.atalariq.dev" },
+  { name: "Journey", url: "https://journey.atalariq.dev" },
   { name: "Medium", url: "https://medium.com/@atalariq" },
+  { name: "YouTube", url: "https://youtube.com/@atalariq26" },
+  { name: "Last.fm", url: "https://www.last.fm/user/atalariq" },
+  { name: "Letterboxd", url: "https://letterboxd.com/atalariq" },
 ];
 
 export const projects = [
   {
-    name: "atalariq.github.io",
-    desc: "This site — a full terminal-UI portfolio, pure static, no framework.",
-    tags: ["html", "css", "vanilla-js", "github-pages"],
+    name: "wana",
+    desc: "A personal CSS design system. One file of OKLCH tokens, no build step.",
+    tags: ["css", "design-tokens", "oklch"],
+  },
+  {
+    name: "dev-journey",
+    desc: "My digital garden and weekly journal. Astro, content symlinked from a private notes vault.",
+    tags: ["astro", "typescript", "bun", "cloudflare"],
+  },
+  {
+    name: "wayfinder",
+    desc: "A quiz that suggests which software engineering role suits you, scored by a plain function.",
+    tags: ["astro", "svelte", "vercel"],
+    url: "https://wayfinder.atalariq.dev",
+  },
+  {
+    name: "laptopval",
+    desc: "Scores used-laptop listings so you can tell if a price is fair.",
+    tags: ["sveltekit", "drizzle", "postgres"],
+  },
+  {
+    name: "awesome-browser",
+    desc: "A curated list of browsers, engines, extensions, and browser tooling.",
+    tags: ["awesome-list", "markdown"],
   },
   {
     name: "dotfiles",
-    desc: "Riced terminal-heavy workflow: editor, shell, multiplexer, the works.",
-    tags: ["bash", "neovim", "tmux", "linux"],
+    desc: "My dotfiles: fish, neovim, kitty, tmux, deployed with a symlink script.",
+    tags: ["bash", "fish", "lua", "linux"],
   },
 ];
 
@@ -37,37 +62,51 @@ export const experience = []; // { role, org, period, summary }
 // ── Prose renderers (return HTML strings) ────────────────────────────────
 export function renderAbout() {
   return [
-    `<p><span class="green">Atalariq Barra Hadinugraha</span> — CS student from Indonesia.</p>`,
+    `<p><span class="green">Atalariq Barra Hadinugraha</span>. Aspiring software engineer, lifelong learner, vimmer.</p>`,
+    `<p class="dim"># whereami</p>`,
+    `<p>Software Engineering student at UGM Sekolah Vokasi, in Yogyakarta.</p>`,
     `<p class="dim"># status</p>`,
-    `<p>exploring agentic workflows, harness &amp; loop engineering.</p>`,
-    `<p>re-learning vim, git, docker, and advanced CLI from the ground up.</p>`,
+    `<p>I spend most of my time on agentic workflows: building harnesses and loops with AI agents, and using them to learn. My fundamentals are still shaky, so I'm going back through vim, git, docker, and the shell properly.</p>`,
     `<p class="dim"># stack</p>`,
-    `<p>Go · JS/TS (Bun) · Linux · Docker</p>`,
+    `<p>TS/JS and Go, mostly. Python, Bash/Fish, and Lua for dotfiles. Typst when I need to typeset something.</p>`,
+    `<p class="dim"># interests</p>`,
+    `<p>agentic ai, platform engineering, ricing, writing, hiking, plus books, music, and film.</p>`,
   ].join("");
 }
 
 export function renderVision() {
   return [
     `<h2 class="green"># vision</h2>`,
-    `<p>Become a Platform Engineer — Go + JS/TS (Bun), DevOps, Cloud, SRE.</p>`,
-    `<h2 class="green"># teaching</h2>`,
-    `<p>Build an MIT "Missing Semester"-style curriculum for Indonesian students: the practical tooling no one teaches in class.</p>`,
+    `<p class="dim">## north star</p>`,
+    `<p>I want to end up in infrastructure or platform engineering, mostly Go and TypeScript, working close to deployment and reliability. Realistically that's a few years out, around when I graduate.</p>`,
+    `<p class="dim">## how i work</p>`,
+    `<p>Most of what I build now, I build with AI agents. That lets me ship things I couldn't on my own yet, but it also means my own fundamentals lag behind, so I'm working on those in parallel. I learn fast and I don't mind changing my mind.</p>`,
+    `<p class="dim">## learning in public</p>`,
+    `<p>I write about what I'm learning on Journey and share bits on social. Video will come once I can afford a new laptop. Further out, I'd like to build a Kinnu-style app for learning things in small pieces.</p>`,
+    `<p class="dim">## the long game</p>`,
+    `<p>Graduate, get a job, start contributing to open source. Away from code: read more, listen to more music, watch more films.</p>`,
   ].join("");
 }
 
 export function renderContact() {
   return [
-    `<p># get in touch</p>`,
-    `<p><a href="mailto:rfachrizal98@gmail.com">rfachrizal98@gmail.com</a></p>`,
-    `<p class="dim">or find me on any of the links in <a href="#linktree">~/links</a>.</p>`,
+    `<p class="dim"># get in touch</p>`,
+    `<p><a href="mailto:hi@atalariq.dev">hi@atalariq.dev</a></p>`,
+    `<p class="dim"># status</p>`,
+    `<p>open to internships and collaboration.</p>`,
+    `<p class="dim"># elsewhere</p>`,
+    `<p>the rest of my links are in <a href="#linktree">~/links</a> (run: tree links).</p>`,
   ].join("");
 }
 
 function renderProject(p) {
   const tags = p.tags.map((t) => `[${t}]`).join(" ");
+  const link = p.url
+    ? `<p><a href="${p.url}">${p.url.replace(/^https?:\/\/(www\.)?/, "")}</a></p>`
+    : "";
   return (
     `<article class="project"><h2 class="green">${p.name}</h2>` +
-    `<p>${p.desc}</p><p class="tags">${tags}</p></article>`
+    `<p>${p.desc}</p>${link}<p class="tags">${tags}</p></article>`
   );
 }
 
@@ -91,7 +130,7 @@ export const tree = {
         name: linkSlug(l),
         url: l.url,
         render: () =>
-          `<p><a href="${l.url}">${l.url.replace(/^https?:\/\//, "")}</a></p>`,
+          `<p><a href="${l.url}">${l.url.replace(/^https?:\/\/(www\.)?/, "")}</a></p>`,
       })),
     },
     {
@@ -102,6 +141,7 @@ export const tree = {
         name: p.name,
         desc: p.desc,
         tags: p.tags,
+        url: p.url,
         render: () => renderProject(p),
       })),
     },

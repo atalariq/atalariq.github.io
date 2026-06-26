@@ -47,7 +47,7 @@ test("ls -l projects shows a long listing with a mode and description", () => {
   expect(d.tab).toBe("projects");
   expect(d.html).toContain("-rw-r--r--");
   expect(d.html).toContain("dotfiles");
-  expect(d.html).toContain("Riced terminal-heavy workflow");
+  expect(d.html).toContain("symlink script");
 });
 
 test("tree links draws branches with clickable urls and the linktree tab", () => {
@@ -56,7 +56,10 @@ test("tree links draws branches with clickable urls and the linktree tab", () =>
   expect(d.html).toContain("├──");
   expect(d.html).toContain("└──");
   expect(d.html).toContain('href="https://github.com/atalariq"');
-  expect(d.html).toContain("5 files");
+  expect(d.html).toContain("9 files");
+  // displayed url strips the scheme and a leading www.
+  expect(d.html).toContain(">last.fm/user/atalariq<");
+  expect(d.html).not.toContain(">www.last.fm");
 });
 
 test("tree of a file errors", () => {

@@ -3,7 +3,8 @@ import { bootstrap } from "../terminal.js";
 
 const FIXTURE = `
   <main id="terminal">
-    <span class="prompt-label">atalariq@portfolio:~$</span>
+    <span class="window-title">atalariq@portfolio</span>
+    <button id="theme-toggle" aria-pressed="true"></button>
     <nav>
       <button data-tab="about" aria-selected="true"></button>
       <button data-tab="projects" aria-selected="false"></button>
@@ -11,7 +12,13 @@ const FIXTURE = `
     </nav>
     <div class="screen" id="screen">
       <div id="output"></div>
-      <form id="prompt-form"><label class="prompt-label">x</label><input id="prompt-input" /></form>
+      <form id="prompt-form" class="promptbar">
+        <div class="prompt-info" id="prompt-info"></div>
+        <div class="prompt-line">
+          <label class="prompt-char" id="prompt-char">❯</label>
+          <input id="prompt-input" />
+        </div>
+      </form>
     </div>
   </main>
 `;
@@ -126,4 +133,14 @@ test("click in #terminal focuses the prompt input", () => {
     .querySelector('[data-tab="about"]')
     .dispatchEvent(new MouseEvent("click", { bubbles: true }));
   expect(focusCalled).toBe(true);
+});
+
+test("clicking the theme toggle flips the theme and aria-pressed", () => {
+  const win = fakeWindow("");
+  document.documentElement.removeAttribute("data-theme");
+  bootstrap({ win, doc: document, typewriter: false });
+  const btn = document.getElementById("theme-toggle");
+  btn.click();
+  expect(document.documentElement.getAttribute("data-theme")).toBe("light");
+  expect(btn.getAttribute("aria-pressed")).toBe("false");
 });

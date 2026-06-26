@@ -31,10 +31,10 @@ test("appendOutput appends an html node to #output", () => {
   expect(document.querySelector("#output .err").textContent).toBe("boom");
 });
 
-test("echoPrompt appends the prompt string plus the (escaped) command", () => {
-  echoPrompt(document, "atalariq@portfolio:~$", "<b>hi</b>");
+test("echoPrompt appends the prompt info plus the (escaped) command", () => {
+  echoPrompt(document, "atalariq", [], "<b>hi</b>");
   const line = document.querySelector("#output").textContent;
-  expect(line).toContain("atalariq@portfolio:~$");
+  expect(line).toContain("atalariq");
   expect(line).toContain("<b>hi</b>");
   expect(document.querySelector("#output b")).toBeNull();
 });

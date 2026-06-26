@@ -6,8 +6,10 @@ function makeCtx() {
   document.body.innerHTML = `
     <button data-tab="about" aria-selected="true"></button>
     <button data-tab="projects" aria-selected="false"></button>
-    <span class="prompt-label">atalariq@portfolio:~$</span>
+    <span class="window-title">atalariq@portfolio</span>
     <div id="output"></div>
+    <div id="prompt-info"></div>
+    <span id="prompt-char">❯</span>
   `;
   const hashes = [];
   return {
@@ -68,12 +70,24 @@ test("clear empties the output log", () => {
   expect(document.getElementById("output").innerHTML).toBe("");
 });
 
-test("cd updates the prompt label to the new cwd", () => {
+test("cd updates the prompt directory segment to the new cwd", () => {
   const { ctx } = makeCtx();
   executeCommand(ctx, "cd projects");
-  expect(document.querySelector(".prompt-label").textContent).toBe(
-    "atalariq@portfolio:~/projects$",
+  expect(document.querySelector("#prompt-info .seg-dir").textContent).toBe(
+    "~/projects",
   );
+});
+
+test("the prompt char goes red after an error and green after success", () => {
+  const { ctx } = makeCtx();
+  executeCommand(ctx, "banana");
+  expect(
+    document.getElementById("prompt-char").classList.contains("is-error"),
+  ).toBe(true);
+  executeCommand(ctx, "help");
+  expect(
+    document.getElementById("prompt-char").classList.contains("is-error"),
+  ).toBe(false);
 });
 
 test("unknown command prints a red command-not-found error", () => {

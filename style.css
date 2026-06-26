@@ -95,9 +95,18 @@ html {
 
 /* ===== Terminal chrome (wana semantic tokens) ===== */
 
+/* Subset of FiraCode/Symbols Nerd Font: only the git-branch glyph (U+E0A0),
+   used for the starship prompt. unicode-range scopes it to that codepoint. */
+@font-face {
+  font-family: "Nerd Glyphs";
+  src: url("fonts/nerd-glyphs.woff") format("woff");
+  unicode-range: U+E0A0;
+  font-display: swap;
+}
+
 :root {
-  /* Terminal display font layered on wana's mono stack. */
-  --font: "Fira Code", var(--font-mono);
+  /* Terminal display font: Fira Code, with a Nerd Font subset for glyphs. */
+  --font: "Fira Code", "Nerd Glyphs", var(--font-mono);
 }
 
 html,
@@ -151,16 +160,21 @@ a:focus {
   color: var(--muted);
   font-size: 0.85rem;
 }
-.titlebar .prompt-label {
+.window-title {
+  color: var(--muted);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.titlebar-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-s);
+  flex: 0 0 auto;
+}
 .titlebar-dots {
   color: var(--muted);
   letter-spacing: 0.15em;
-  flex: 0 0 auto;
-  padding-left: var(--space-s);
 }
 
 /* ============================ Tab bar ============================ */
@@ -289,13 +303,84 @@ pre {
 /* The prompt is the last line of the scroll log, not a fixed bar. */
 .promptbar {
   display: flex;
-  align-items: baseline;
-  gap: 0.5rem;
+  flex-direction: column;
+  gap: 0.1rem;
   margin-top: 0.2rem;
 }
-.prompt-label {
+.prompt-line {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+.prompt-char {
   color: var(--accent);
+  font-weight: 700;
   white-space: nowrap;
+}
+.prompt-char.is-error {
+  color: var(--error);
+}
+.seg-user {
+  color: var(--warning);
+  font-weight: 700;
+}
+.seg-op {
+  color: var(--muted);
+}
+.seg-dir {
+  color: var(--info);
+  font-weight: 700;
+}
+.seg-git {
+  color: var(--magenta);
+  font-weight: 700;
+}
+.cmd {
+  color: var(--warning);
+}
+
+/* ============================ Theme toggle ============================ */
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 0.15rem;
+  border-radius: var(--radius);
+}
+.theme-toggle:hover {
+  color: var(--text);
+}
+.theme-toggle:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: 1px;
+}
+/* Show the icon for the active theme (moon = dark, sun = light). */
+.icon-sun {
+  display: none;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) .icon-sun {
+    display: inline-block;
+  }
+  :root:not([data-theme]) .icon-moon {
+    display: none;
+  }
+}
+[data-theme="light"] .icon-sun {
+  display: inline-block;
+}
+[data-theme="light"] .icon-moon {
+  display: none;
+}
+[data-theme="dark"] .icon-sun {
+  display: none;
+}
+[data-theme="dark"] .icon-moon {
+  display: inline-block;
 }
 .prompt-input {
   flex: 1 1 auto;

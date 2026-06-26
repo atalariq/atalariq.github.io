@@ -89,7 +89,7 @@ function renderTree(node, prefix = "") {
     const branch = last ? "└── " : "├── ";
     let label;
     if (child.url) {
-      const shown = child.url.replace(/^https?:\/\//, "");
+      const shown = child.url.replace(/^https?:\/\/(www\.)?/, "");
       label =
         `<span class="green">${escapeHtml(child.name)}</span> ` +
         `<a href="${escapeHtml(child.url)}">${escapeHtml(shown)}</a>`;
