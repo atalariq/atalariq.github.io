@@ -21,6 +21,7 @@
   --warning: oklch(55.4% 0.121 68.5); /* #a06300  — 4.78:1 AA  */
   --error: oklch(54.6% 0.161 27); /* #bc4039  — 5.20:1 AA  */
   --info: oklch(51.4% 0.13 249.9); /* #1c6aae  — 5.49:1 AA  */
+  --magenta: oklch(45% 0.13 354); /* #9a3b6a  — AA on warm paper   */
 
   /* ── Typography ─────────────────────────────────────────────────── */
   --font-sans:
@@ -74,6 +75,7 @@
     --warning: oklch(80.9% 0.12 75); /* #eeb562  — 8.02:1 AAA */
     --error: oklch(76.2% 0.14 21.9); /* #fe8b89  — 6.51:1 AA  */
     --info: oklch(76.3% 0.101 250.1); /* #80b7f0  — 6.99:1 AA  */
+    --magenta: oklch(75% 0.09 350); /* #d3869b  — wana magenta  */
   }
 }
 
@@ -90,6 +92,7 @@
   --warning: oklch(80.9% 0.12 75);
   --error: oklch(76.2% 0.14 21.9);
   --info: oklch(76.3% 0.101 250.1);
+  --magenta: oklch(75% 0.09 350);
 }
 
 /* Explicit light: lets OS-dark users pin the light palette. */
@@ -104,6 +107,7 @@
   --warning: oklch(55.4% 0.121 68.5);
   --error: oklch(54.6% 0.161 27);
   --info: oklch(51.4% 0.13 249.9);
+  --magenta: oklch(45% 0.13 354);
 }
 
 @media (prefers-reduced-motion: reduce) {
