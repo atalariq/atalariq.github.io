@@ -62,29 +62,40 @@ export const experience = []; // { role, org, period, summary }
 // ── Prose renderers (return HTML strings) ────────────────────────────────
 export function renderAbout() {
   return [
-    `<p><span class="green">Atalariq Barra Hadinugraha</span> — CS student from Indonesia.</p>`,
+    `<p><span class="green">Atalariq Barra Hadinugraha</span>. Aspiring software engineer, lifelong learner, vimmer.</p>`,
+    `<p class="dim"># whereami</p>`,
+    `<p>Software Engineering student at UGM Sekolah Vokasi, in Yogyakarta.</p>`,
     `<p class="dim"># status</p>`,
-    `<p>exploring agentic workflows, harness &amp; loop engineering.</p>`,
-    `<p>re-learning vim, git, docker, and advanced CLI from the ground up.</p>`,
+    `<p>I spend most of my time on agentic workflows: building harnesses and loops with AI agents, and using them to learn. My fundamentals are still shaky, so I'm going back through vim, git, docker, and the shell properly.</p>`,
     `<p class="dim"># stack</p>`,
-    `<p>Go · JS/TS (Bun) · Linux · Docker</p>`,
+    `<p>TS/JS and Go, mostly. Python, Bash/Fish, and Lua for dotfiles. Typst when I need to typeset something.</p>`,
+    `<p class="dim"># interests</p>`,
+    `<p>agentic ai, platform engineering, ricing, writing, hiking, plus books, music, and film.</p>`,
   ].join("");
 }
 
 export function renderVision() {
   return [
     `<h2 class="green"># vision</h2>`,
-    `<p>Become a Platform Engineer — Go + JS/TS (Bun), DevOps, Cloud, SRE.</p>`,
-    `<h2 class="green"># teaching</h2>`,
-    `<p>Build an MIT "Missing Semester"-style curriculum for Indonesian students: the practical tooling no one teaches in class.</p>`,
+    `<p class="dim">## north star</p>`,
+    `<p>I want to end up in infrastructure or platform engineering, mostly Go and TypeScript, working close to deployment and reliability. Realistically that's a few years out, around when I graduate.</p>`,
+    `<p class="dim">## how i work</p>`,
+    `<p>Most of what I build now, I build with AI agents. That lets me ship things I couldn't on my own yet, but it also means my own fundamentals lag behind, so I'm working on those in parallel. I learn fast and I don't mind changing my mind.</p>`,
+    `<p class="dim">## learning in public</p>`,
+    `<p>I write about what I'm learning on Journey and share bits on social. Video will come once I can afford a new laptop. Further out, I'd like to build a Kinnu-style app for learning things in small pieces.</p>`,
+    `<p class="dim">## the long game</p>`,
+    `<p>Graduate, get a job, start contributing to open source. Away from code: read more, listen to more music, watch more films.</p>`,
   ].join("");
 }
 
 export function renderContact() {
   return [
-    `<p># get in touch</p>`,
-    `<p><a href="mailto:rfachrizal98@gmail.com">rfachrizal98@gmail.com</a></p>`,
-    `<p class="dim">or find me on any of the links in <a href="#linktree">~/links</a>.</p>`,
+    `<p class="dim"># get in touch</p>`,
+    `<p><a href="mailto:hi@atalariq.dev">hi@atalariq.dev</a></p>`,
+    `<p class="dim"># status</p>`,
+    `<p>open to internships and collaboration.</p>`,
+    `<p class="dim"># elsewhere</p>`,
+    `<p>the rest of my links are in <a href="#linktree">~/links</a> (run: tree links).</p>`,
   ].join("");
 }
 

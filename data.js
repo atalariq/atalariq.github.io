@@ -5,7 +5,7 @@ export const profile = {
   user: "atalariq",
   host: "portfolio",
   name: "Atalariq Barra Hadinugraha",
-  tagline: "CS student from Indonesia · platform-engineer-in-training",
+  tagline: "aspiring software engineer · lifelong learner · vimmer",
 };
 
 export const tabs = ["about", "linktree", "projects", "vision", "contact"];
