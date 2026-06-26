@@ -126,3 +126,31 @@ test("the theme toggle flips and persists across reload", async ({ page }) => {
   );
   expect(persisted).toBe(after);
 });
+
+test("man, cheat, and resume produce output", async ({ page }) => {
+  await run(page, "man ls");
+  await expect(page.locator("#output")).toContainText(
+    "list directory contents",
+  );
+  await run(page, "cheat git");
+  await expect(page.locator("#output")).toContainText("git status");
+  await run(page, "resume");
+  await expect(page.locator("#output")).toContainText("UGM Sekolah Vokasi");
+});
+
+test("the shortcut overlay opens from the ? button and closes on Escape", async ({
+  page,
+}) => {
+  const overlay = page.locator("#shortcut-overlay");
+  await expect(overlay).toBeHidden();
+  await page.locator("#help-toggle").click();
+  await expect(overlay).toBeVisible();
+  await expect(overlay).toContainText("keyboard shortcuts");
+  await page.keyboard.press("Escape");
+  await expect(overlay).toBeHidden();
+});
+
+test("the keys command opens the overlay", async ({ page }) => {
+  await run(page, "keys");
+  await expect(page.locator("#shortcut-overlay")).toBeVisible();
+});

@@ -24,6 +24,15 @@ test("has a tab button for each of the five tabs", () => {
   }
 });
 
+test("has a shortcut overlay and a button to open it", () => {
+  const doc = dom();
+  expect(doc.getElementById("help-toggle")).not.toBeNull();
+  const overlay = doc.getElementById("shortcut-overlay");
+  expect(overlay).not.toBeNull();
+  expect(overlay.getAttribute("role")).toBe("dialog");
+  expect(doc.getElementById("overlay-close")).not.toBeNull();
+});
+
 test("links an SVG favicon and an apple-touch icon", () => {
   const doc = dom();
   expect(

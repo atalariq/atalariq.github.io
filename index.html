@@ -50,6 +50,15 @@
         <span class="window-title">atalariq@portfolio</span>
         <span class="titlebar-right">
           <button
+            id="help-toggle"
+            class="icon-btn"
+            type="button"
+            aria-label="Keyboard shortcuts"
+            aria-haspopup="dialog"
+          >
+            ?
+          </button>
+          <button
             id="theme-toggle"
             class="theme-toggle"
             type="button"
@@ -171,6 +180,68 @@
             />
           </div>
         </form>
+      </div>
+
+      <!-- Keyboard-shortcut overlay (opened by ?, Ctrl+/, or `keys`) -->
+      <div
+        id="shortcut-overlay"
+        class="overlay"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Keyboard shortcuts"
+        hidden
+      >
+        <div class="overlay-card">
+          <div class="overlay-head">
+            <span class="green">keyboard shortcuts</span>
+            <button
+              id="overlay-close"
+              class="icon-btn"
+              type="button"
+              aria-label="Close"
+            >
+              ✕
+            </button>
+          </div>
+          <dl class="shortcut-list">
+            <div>
+              <dt>Tab</dt>
+              <dd>complete command / path</dd>
+            </div>
+            <div>
+              <dt>↑ / ↓</dt>
+              <dd>command history</dd>
+            </div>
+            <div>
+              <dt>Ctrl+L</dt>
+              <dd>clear the screen</dd>
+            </div>
+            <div>
+              <dt>Ctrl+U</dt>
+              <dd>clear the line</dd>
+            </div>
+            <div>
+              <dt>Ctrl+A / Ctrl+E</dt>
+              <dd>line start / end</dd>
+            </div>
+            <div>
+              <dt>Ctrl+C</dt>
+              <dd>cancel the line</dd>
+            </div>
+            <div>
+              <dt>Ctrl+/</dt>
+              <dd>this overlay</dd>
+            </div>
+            <div>
+              <dt>Esc</dt>
+              <dd>close the overlay</dd>
+            </div>
+          </dl>
+          <p class="overlay-foot dim">
+            type <span class="yellow">help</span> for commands,
+            <span class="yellow">man &lt;cmd&gt;</span> for details
+          </p>
+        </div>
       </div>
     </main>
 

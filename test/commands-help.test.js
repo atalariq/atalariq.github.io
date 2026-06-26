@@ -77,3 +77,11 @@ test("cheat for an unknown topic links out to cht.sh", () => {
   expect(d.html).toContain("cht.sh/kubernetes");
   expect(d.html).toContain('target="_blank"');
 });
+
+test("keys returns an overlay descriptor", () => {
+  expect(runCommand("keys", env()).overlay).toBe(true);
+});
+
+test("shortcuts is an alias for keys", () => {
+  expect(runCommand("shortcuts", env()).overlay).toBe(true);
+});

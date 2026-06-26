@@ -268,6 +268,10 @@ function repo() {
   };
 }
 
+function keys() {
+  return { overlay: true };
+}
+
 const stripScheme = (u) => u.replace(/^https?:\/\/(www\.)?/, "");
 
 function cheat(args) {
@@ -379,6 +383,8 @@ Object.assign(COMMANDS, {
   resume,
   cv: resume,
   cheat,
+  keys,
+  shortcuts: keys,
   theme,
   sudo,
   vim,
