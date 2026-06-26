@@ -4,22 +4,47 @@
 
 export const links = [
   { name: "GitHub", url: "https://github.com/atalariq" },
+  { name: "GitLab", url: "https://gitlab.com/atalariq" },
   { name: "LinkedIn", url: "https://linkedin.com/in/atalariq" },
   { name: "Instagram", url: "https://instagram.com/atalariq.dev" },
-  { name: "Journal", url: "https://journal.atalariq.dev" },
+  { name: "Journey", url: "https://journey.atalariq.dev" },
   { name: "Medium", url: "https://medium.com/@atalariq" },
+  { name: "YouTube", url: "https://youtube.com/@atalariq26" },
+  { name: "Last.fm", url: "https://www.last.fm/user/atalariq" },
+  { name: "Letterboxd", url: "https://letterboxd.com/atalariq" },
 ];
 
 export const projects = [
   {
-    name: "atalariq.github.io",
-    desc: "This site — a full terminal-UI portfolio, pure static, no framework.",
-    tags: ["html", "css", "vanilla-js", "github-pages"],
+    name: "wana",
+    desc: "A personal CSS design system. One file of OKLCH tokens, no build step.",
+    tags: ["css", "design-tokens", "oklch"],
+  },
+  {
+    name: "dev-journey",
+    desc: "My digital garden and weekly journal. Astro, content symlinked from a private notes vault.",
+    tags: ["astro", "typescript", "bun", "cloudflare"],
+  },
+  {
+    name: "wayfinder",
+    desc: "A quiz that suggests which software engineering role suits you, scored by a plain function.",
+    tags: ["astro", "svelte", "vercel"],
+    url: "https://wayfinder.atalariq.dev",
+  },
+  {
+    name: "laptopval",
+    desc: "Scores used-laptop listings so you can tell if a price is fair.",
+    tags: ["sveltekit", "drizzle", "postgres"],
+  },
+  {
+    name: "awesome-browser",
+    desc: "A curated list of browsers, engines, extensions, and browser tooling.",
+    tags: ["awesome-list", "markdown"],
   },
   {
     name: "dotfiles",
-    desc: "Riced terminal-heavy workflow: editor, shell, multiplexer, the works.",
-    tags: ["bash", "neovim", "tmux", "linux"],
+    desc: "My dotfiles: fish, neovim, kitty, tmux, deployed with a symlink script.",
+    tags: ["bash", "fish", "lua", "linux"],
   },
 ];
 
@@ -65,9 +90,12 @@ export function renderContact() {
 
 function renderProject(p) {
   const tags = p.tags.map((t) => `[${t}]`).join(" ");
+  const link = p.url
+    ? `<p><a href="${p.url}">${p.url.replace(/^https?:\/\/(www\.)?/, "")}</a></p>`
+    : "";
   return (
     `<article class="project"><h2 class="green">${p.name}</h2>` +
-    `<p>${p.desc}</p><p class="tags">${tags}</p></article>`
+    `<p>${p.desc}</p>${link}<p class="tags">${tags}</p></article>`
   );
 }
 
@@ -91,7 +119,7 @@ export const tree = {
         name: linkSlug(l),
         url: l.url,
         render: () =>
-          `<p><a href="${l.url}">${l.url.replace(/^https?:\/\//, "")}</a></p>`,
+          `<p><a href="${l.url}">${l.url.replace(/^https?:\/\/(www\.)?/, "")}</a></p>`,
       })),
     },
     {
@@ -102,6 +130,7 @@ export const tree = {
         name: p.name,
         desc: p.desc,
         tags: p.tags,
+        url: p.url,
         render: () => renderProject(p),
       })),
     },
