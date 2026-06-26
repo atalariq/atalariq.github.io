@@ -2,7 +2,7 @@
 // DESCRIPTOR (html / clear / theme / cd / tab / error). No DOM here.
 import { resolvePath, listDir, readFile, formatCwd } from "./filesystem.js";
 import { escapeHtml } from "./util.js";
-import { sectionCommands } from "./data.js";
+import { sectionCommands, manpages } from "./data.js";
 
 export function tokenize(input) {
   const raw = (input || "").trim();
@@ -238,6 +238,35 @@ function uname(args, env) {
   }
   return { html: `<p>${base}</p>` };
 }
+function man(args) {
+  const name = args[0];
+  if (!name)
+    return {
+      html: `<p>What manual page do you want? Try: <span class="yellow">man ls</span></p>`,
+    };
+  const m = manpages[name];
+  if (!m) return { error: `No manual entry for ${name}` };
+  return {
+    html:
+      `<pre>NAME\n    ${escapeHtml(name)} — ${escapeHtml(m.summary)}\n\n` +
+      `USAGE\n    ${escapeHtml(m.usage)}</pre>`,
+  };
+}
+
+function whatis(args) {
+  const name = args[0];
+  const m = manpages[name];
+  if (!m) return { error: `${name || ""}: nothing appropriate.` };
+  return { html: `<p>${escapeHtml(name)} — ${escapeHtml(m.summary)}</p>` };
+}
+
+function repo() {
+  const url = "https://github.com/atalariq/atalariq.github.io";
+  return {
+    html: `<p><a href="${url}">${url.replace(/^https?:\/\//, "")}</a></p>`,
+  };
+}
+
 function theme(args) {
   const mode = (args[0] || "toggle").toLowerCase();
   if (!["light", "dark", "toggle"].includes(mode)) {
@@ -295,6 +324,9 @@ Object.assign(COMMANDS, {
   echo,
   date,
   uname,
+  man,
+  whatis,
+  repo,
   theme,
   sudo,
   vim,
