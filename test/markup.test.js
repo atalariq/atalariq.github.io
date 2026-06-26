@@ -24,6 +24,14 @@ test("has a tab button for each of the five tabs", () => {
   }
 });
 
+test("links an SVG favicon and an apple-touch icon", () => {
+  const doc = dom();
+  expect(
+    doc.querySelector('link[rel="icon"][type="image/svg+xml"]'),
+  ).not.toBeNull();
+  expect(doc.querySelector('link[rel="apple-touch-icon"]')).not.toBeNull();
+});
+
 test("has the prompt input and output log, with the prompt inside the screen", () => {
   const doc = dom();
   expect(doc.getElementById("prompt-input")).not.toBeNull();

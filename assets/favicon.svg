@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="atalariq">
+  <style>
+    .mark { fill: #2d6e3f; }
+    @media (prefers-color-scheme: dark) {
+      .mark { fill: #7abb87; }
+    }
+  </style>
+  <g class="mark">
+    <!-- wizard hat: leaning cone -->
+    <path d="M15 50 C 19 31, 25 16, 51 9 C 42 25, 39 40, 45 50 Z" />
+    <!-- brim -->
+    <ellipse cx="30" cy="51.5" rx="22" ry="5" />
+    <!-- sparkle -->
+    <path d="M52 18 l1.6 4 4 1.6 -4 1.6 -1.6 4 -1.6 -4 -4 -1.6 4 -1.6 Z" />
+  </g>
+</svg>
