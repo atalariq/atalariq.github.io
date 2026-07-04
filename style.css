@@ -136,6 +136,22 @@ a:focus {
   text-decoration: underline;
 }
 
+/* Skip link: visually hidden until keyboard-focused. */
+.skip-link {
+  position: fixed;
+  top: var(--space-s);
+  left: var(--space-s);
+  z-index: 20;
+  padding: var(--space-2xs) var(--space-s);
+  background: var(--surface);
+  color: var(--text);
+  border-radius: var(--radius);
+  transform: translateY(-200%);
+}
+.skip-link:focus {
+  transform: none;
+}
+
 /* ============================ Terminal window ============================ */
 
 .terminal {

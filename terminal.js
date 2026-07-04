@@ -91,7 +91,9 @@ export function appendOutput(doc, html) {
 export function echoPrompt(doc, user, cwd, input) {
   appendOutput(
     doc,
-    `<div class="prompt-info">${renderPromptInfo(user, cwd)}</div>` +
+    // aria-hidden: the echoed starship line is visual chrome; without it the
+    // aria-live log re-announces "user in ~ on main" after every command.
+    `<div class="prompt-info" aria-hidden="true">${renderPromptInfo(user, cwd)}</div>` +
       `<div class="prompt-line"><span class="prompt-char">❯</span> ` +
       `<span class="cmd">${escapeHtml(input)}</span></div>`,
   );
@@ -196,7 +198,7 @@ async function playBoot(ctx, opts) {
   }
   const line = doc.createElement("div");
   line.innerHTML =
-    `<div class="prompt-info">${renderPromptInfo(profile.user, ctx.cwd)}</div>` +
+    `<div class="prompt-info" aria-hidden="true">${renderPromptInfo(profile.user, ctx.cwd)}</div>` +
     `<div class="prompt-line"><span class="prompt-char">❯</span> ` +
     `<span class="cmd" id="boot-command"></span>` +
     `<span class="cursor-inline" aria-hidden="true"></span></div>`;
@@ -226,7 +228,13 @@ export function bootstrap(opts = {}) {
     systemInfo: opts.systemInfo || systemInfo,
     helpText: opts.helpText || helpText,
     storage,
-    setHash: (name) => win.history.replaceState(null, "", `#${name}`),
+    setHash: (name) => {
+      win.history.replaceState(null, "", `#${name}`);
+      doc.title =
+        name === "about"
+          ? "atalariq@portfolio"
+          : `atalariq@portfolio — ${name}`;
+    },
   };
 
   const input = doc.getElementById("prompt-input");
@@ -315,7 +323,10 @@ export function bootstrap(opts = {}) {
   focusInput(doc);
 
   if (initial === "about") {
-    playBoot(ctx, opts);
+    const reduceMotion =
+      win.matchMedia &&
+      win.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    playBoot(ctx, reduceMotion ? { ...opts, typewriter: false } : opts);
   } else {
     executeCommand(ctx, sectionCommands[initial]);
   }

@@ -198,7 +198,7 @@ export function renderNeofetch(profile, info) {
     "   ▜████▛   ",
   ].join("\n");
   return (
-    `<div class="neofetch"><pre class="nf-logo">${logo}</pre>` +
+    `<div class="neofetch"><pre class="nf-logo" aria-hidden="true">${logo}</pre>` +
     `<pre class="nf-info"><span class="nf-title">${escapeHtml(title)}</span>\n` +
     `${"-".repeat(title.length)}\n${rows}</pre></div>`
   );

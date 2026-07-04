@@ -28,6 +28,31 @@
     <meta property="og:image" content="https://atalariq.dev/assets/og.png" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="https://atalariq.dev/assets/og.png" />
+    <link rel="canonical" href="https://atalariq.dev/" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Atalariq Barra Hadinugraha",
+        "alternateName": "atalariq",
+        "url": "https://atalariq.dev",
+        "email": "mailto:hi@atalariq.dev",
+        "jobTitle": "Software Engineering Student",
+        "affiliation": {
+          "@type": "CollegeOrUniversity",
+          "name": "Universitas Gadjah Mada"
+        },
+        "sameAs": [
+          "https://github.com/atalariq",
+          "https://gitlab.com/atalariq",
+          "https://linkedin.com/in/atalariq",
+          "https://instagram.com/atalariq.dev",
+          "https://medium.com/@atalariq",
+          "https://youtube.com/@atalariq26",
+          "https://journey.atalariq.dev"
+        ]
+      }
+    </script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -44,6 +69,7 @@
     <title>atalariq@portfolio</title>
   </head>
   <body>
+    <a class="skip-link" href="#prompt-input">skip to prompt</a>
     <main id="terminal" class="terminal" aria-label="terminal portfolio">
       <!-- Title bar -->
       <header class="titlebar">
@@ -156,7 +182,7 @@
       </nav>
 
       <!-- Screen: scrollable output log with the live prompt as its last line -->
-      <div class="screen" id="screen">
+      <div class="screen" id="screen" role="tabpanel">
         <!-- typed-command output log -->
         <div id="output" class="cmd-output" aria-live="polite"></div>
 

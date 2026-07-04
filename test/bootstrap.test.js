@@ -162,6 +162,25 @@ test("the shortcut overlay opens via the ? button and closes on Escape", () => {
   expect(overlay.hidden).toBe(true);
 });
 
+test("prefers-reduced-motion skips the boot typewriter", () => {
+  const win = fakeWindow("");
+  win.matchMedia = (q) => ({
+    matches: q === "(prefers-reduced-motion: reduce)",
+  });
+  bootstrap({ win, doc: document }); // typewriter NOT disabled by the test
+  // Instant path: whoami output is present synchronously, no typing delay.
+  expect(document.getElementById("output").textContent).toContain(
+    "Atalariq Barra Hadinugraha",
+  );
+});
+
+test("switching sections updates the document title", () => {
+  const win = fakeWindow("");
+  bootstrap({ win, doc: document, typewriter: false });
+  document.querySelector('[data-tab="projects"]').click();
+  expect(document.title).toBe("atalariq@portfolio — projects");
+});
+
 test("the `keys` command opens the overlay", () => {
   const win = fakeWindow("");
   bootstrap({ win, doc: document, typewriter: false });
